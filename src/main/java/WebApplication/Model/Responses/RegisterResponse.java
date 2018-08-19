@@ -8,7 +8,6 @@ public class RegisterResponse {
     ///If userID == 0 then  there is already a user with this specific email address
     ///If userID == -1 then the confirmation password is not the same with the initial password
     ///If userID == -2 then there was another general server error
-    ///Otherwise the userID returned is the user's unique ID
 
     public long userId;
 

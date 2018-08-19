@@ -5,6 +5,12 @@ import WebApplication.Model.Responses.*;
 
 public interface WebApplicationServiceInterface {
 
-    public RegisterResponse CreateUser(RegisterRequest request);
+    RegisterResponse Register(RegisterRequest request);
+
+    LoginResponse Login(LoginRequest request);
+
+    GetUsersListResponse GetUsersList();
+
+    GetInfoResponse GetInfo(GetInfoRequest request);
 
 }

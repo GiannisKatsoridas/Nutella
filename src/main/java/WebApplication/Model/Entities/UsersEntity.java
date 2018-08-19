@@ -4,9 +4,20 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@NamedQuery(
-        name = "UsersEntity.findByEmail",
-        query = "SELECT u FROM UsersEntity u WHERE u.email = :email")
+@NamedQueries({
+    @NamedQuery(
+            name = "UsersEntity.findByEmail",
+            query = "SELECT u FROM UsersEntity u WHERE u.email = :email"
+    ),
+    @NamedQuery(
+            name = "UsersEntity.loginUser",
+            query = "SELECT u FROM UsersEntity u WHERE u.email = :email AND u.password = :password"
+    ),
+    @NamedQuery(
+            name = "UsersEntity.getAllUsers",
+            query = "SELECT u FROM UsersEntity u"
+    )
+})
 @Table(name = "users", schema = "nutella")
 public class UsersEntity {
     private long id;

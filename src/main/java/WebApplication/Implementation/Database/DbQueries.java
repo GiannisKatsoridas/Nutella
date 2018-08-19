@@ -24,17 +24,17 @@ public class DbQueries {
             return new RegisterResponse(0);
         }
 
-        Query query = em.createQuery("select t from UsersEntity t order by t.id desc");
-        List<UsersEntity> results = query.setMaxResults(1).getResultList();
-
-        id = results.size() == 0 ? 1000000001 : results.get(0).getId()+1;
+        id = DbQueriesHelper.getLastUserId(em);
 
         user.setId(id);
+
+        PicturesEntity picture = DbQueriesHelper.createPicturesEntity(new PicturesEntity(), id, request.getImage());
 
         em.getTransaction().begin();
 
         try {
             em.persist(user);
+            em.persist(picture);
             em.getTransaction().commit();
         }
         catch(PersistenceException e){
@@ -43,6 +43,58 @@ public class DbQueries {
         }
 
         return new RegisterResponse(id);
+    }
+
+
+    public LoginResponse Login(LoginRequest request){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("UsersEntity.loginUser").setParameter("email", request.getEmail()).setParameter("password", request.getPassword()).getResultList();
+
+        if(users.size() > 1){
+            return new LoginResponse(-1, false);
+        }
+        else if(users.size() == 0){
+            return new LoginResponse(0, false);
+        }
+        else{
+            return new LoginResponse(users.get(0).getId(), users.get(0).getIsAdmin());
+        }
+
+    }
+
+
+    public GetUsersListResponse GetUsersList(){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("UsersEntity.getAllUsers").getResultList();
+
+        return new GetUsersListResponse(users);
+
+    }
+
+
+    public GetInfoResponse GetInfo(GetInfoRequest request){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        UsersEntity user;
+        PicturesEntity picture;
+
+        try {
+            user = em.find(UsersEntity.class, request.getUserId());
+            List<PicturesEntity> pictures = em.createNamedQuery("PicturesEntity.getPictureFromUser").setParameter("userId", request.getUserId()).getResultList();
+            picture = pictures.get(0);
+        }
+        catch (PersistenceException e){
+            return new GetInfoResponse(null, null, null, null);
+        }
+
+        return new GetInfoResponse(user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink());
+
+
     }
 
 }

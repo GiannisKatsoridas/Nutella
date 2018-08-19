@@ -5,6 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "pictures", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "PicturesEntity.getPictureFromUser",
+                query = "select p from PicturesEntity p where p.userId = :userId"
+        )
+})
 @IdClass(PicturesEntityPK.class)
 public class PicturesEntity {
     private long userId;

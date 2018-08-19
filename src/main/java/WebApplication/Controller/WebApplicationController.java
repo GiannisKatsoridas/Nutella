@@ -5,10 +5,7 @@ import WebApplication.Implementation.WebApplicationServiceImplementation;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 @Consumes({"application/json"})
 @Produces({"application/json"})
@@ -26,7 +23,35 @@ public class WebApplicationController {
     @Path("/user/register")
     public RegisterResponse CreateUser(RegisterRequest request){
 
-        return service.CreateUser(request);
+        return service.Register(request);
+
+    }
+
+    @GET
+    @Path("user/login/{email}/{password}")
+    public LoginResponse Login(@PathParam("email") final String email, @PathParam("password") final String password){
+
+        LoginRequest request = new LoginRequest(email, password);
+
+        return service.Login(request);
+
+    }
+
+    @GET
+    @Path("user/getusers")
+    public GetUsersListResponse GetUsersList(){
+
+        return service.GetUsersList();
+
+    }
+
+    @GET
+    @Path("user/getinfo/{id}")
+    public GetInfoResponse GetInfo(@PathParam("id") final long id){
+
+        GetInfoRequest request = new GetInfoRequest(id);
+
+        return service.GetInfo(request);
 
     }
 
