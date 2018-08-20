@@ -16,4 +16,12 @@ public interface WebApplicationServiceInterface {
     InsertPostResponse InsertPost(InsertPostRequest request);
 
     GetConnectionsResponse GetConnections(GetConnectionsRequest request);
+
+    InsertJobResponse InsertJob(InsertJobRequest request);
+
+    LikeResponse Like(LikeRequest request);
+
+    CommentResponse Comment(CommentRequest request);
+
+    GetPostsResponse GetPosts(GetPostsRequest request);
 }

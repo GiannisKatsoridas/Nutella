@@ -1,14 +1,12 @@
 package WebApplication.Implementation.Database;
 
-import WebApplication.Model.Entities.MediaEntity;
-import WebApplication.Model.Entities.PicturesEntity;
-import WebApplication.Model.Entities.PostsEntity;
-import WebApplication.Model.Entities.UsersEntity;
+import WebApplication.Model.Entities.*;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.RegisterResponse;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class DbQueriesHelper {
         Query query = em.createQuery("select t from UsersEntity t order by t.id desc");
         List<UsersEntity> results = query.setMaxResults(1).getResultList();
 
-        return results.size() == 0 ? 1000000001 : results.get(0).getId()+1;
+        return results.size() == 0 ? 1000000001L : results.get(0).getId()+1;
 
     }
 
@@ -63,9 +61,9 @@ public class DbQueriesHelper {
     public static long GetLastPostId(EntityManager em){
 
         Query query = em.createQuery("select p from PostsEntity p order by p.id desc");
-        List<UsersEntity> results = query.setMaxResults(1).getResultList();
+        List<PostsEntity> results = query.setMaxResults(1).getResultList();
 
-        return results.size() == 0 ? 2000000001 : results.get(0).getId()+1;
+        return results.size() == 0 ? 2000000001L : results.get(0).getId()+1;
 
     }
 
@@ -75,6 +73,41 @@ public class DbQueriesHelper {
         media.setPostId(postId);
 
         return media;
+    }
+
+    public static JobsEntity CreateJob(JobsEntity job, InsertJobRequest request){
+
+        job.setCreator(request.getUserId());
+        job.setDescription(request.getJobDescription());
+        job.setTitle(request.getJobTitle());
+
+        return job;
+    }
+
+    public static long GetLastJobId(EntityManager em){
+
+        Query query = em.createQuery("select j from JobsEntity j order by j.id desc");
+        List<JobsEntity> results = query.setMaxResults(1).getResultList();
+
+        return results.size() == 0 ? 3000000001L : results.get(0).getId()+1;
+    }
+
+    public static LikesEntity CreateLike(LikesEntity like, LikeRequest request){
+
+        like.setPostId(request.getPostId());
+        like.setUserId(request.getUserId());
+
+        return like;
+    }
+
+    public static CommentsEntity CreateComment(CommentsEntity comment, CommentRequest request){
+
+        comment.setPostId(request.getPostId());
+        comment.setUserId(request.getUserId());
+        comment.setText(request.getText());
+        comment.setTimeStamp(new Timestamp(System.currentTimeMillis()));
+
+        return comment;
     }
 
 }

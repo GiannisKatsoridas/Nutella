@@ -4,10 +4,7 @@ import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 import WebApplication.Model.Entities.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 public class DbQueries {
@@ -16,6 +13,7 @@ public class DbQueries {
     public long InsertUser(UsersEntity user){
 
         EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
 
         List<UsersEntity> usersByEmail = DbQueriesHelper.GetUsersByEmail(em, user.getEmail());
         if(usersByEmail.size() != 0){
@@ -26,14 +24,14 @@ public class DbQueries {
 
         user.setId(id);
 
-        em.getTransaction().begin();
+        tx.begin();
 
         try {
             em.persist(user);
-            em.getTransaction().commit();
+            tx.commit();
         }
         catch(PersistenceException e){
-            em.getTransaction().rollback();
+            tx.rollback();
             id = -2;
         }
 
@@ -49,15 +47,16 @@ public class DbQueries {
         long id = picture.getUserId();
 
         EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
 
-        em.getTransaction().begin();
+        tx.begin();
 
         try {
             em.persist(picture);
-            em.getTransaction().commit();
+            tx.commit();
         }
         catch(PersistenceException e){
-            em.getTransaction().rollback();
+            tx.rollback();
             id = -2;
         }
 
@@ -134,7 +133,6 @@ public class DbQueries {
         long id = DbQueriesHelper.GetLastPostId(em);
         post.setId(id);
 
-
         try{
             em.persist(post);
         }
@@ -170,8 +168,120 @@ public class DbQueries {
 
         connections1.addAll(connections2);
 
+        em.close();
+
         return connections1;
 
     }
 
+
+    public long InsertJob(EntityManager em, JobsEntity job){
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        long jobId;
+
+        try{
+            em.persist(job);
+            tx.commit();
+            jobId = job.getId();
+        }
+        catch(PersistenceException e){
+            tx.rollback();
+            jobId = -1;
+        }
+
+        return jobId;
+    }
+
+
+    public boolean Like(LikesEntity like){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(like);
+            tx.commit();
+            result = true;
+        }
+        catch(PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public boolean Comment(CommentsEntity comment){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(comment);
+            tx.commit();
+            result = true;
+        }
+        catch(PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public List<PostsEntity> GetPosts(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<PostsEntity> posts1 = em.createNamedQuery("PostsEntity.GetPostsFromFriend1").setParameter("userId", userId).getResultList();
+        List<PostsEntity> posts2 = em.createNamedQuery("PostsEntity.GetPostsFromFriend2").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        posts1.addAll(posts2);
+
+        return posts1;
+
+    }
+
+
+    public List<LikesEntity> GetLikes(long postId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<LikesEntity> likes = em.createNamedQuery("LikesEntity.GetLikes").setParameter("postId", postId).getResultList();
+
+        em.close();
+
+        return likes;
+
+    }
+
+
+    public List<CommentsEntity> GetComments(long postId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<CommentsEntity> comments = em.createNamedQuery("CommentsEntity.GetComments").setParameter("postId", postId).getResultList();
+
+        em.close();
+
+        return comments;
+
+    }
 }

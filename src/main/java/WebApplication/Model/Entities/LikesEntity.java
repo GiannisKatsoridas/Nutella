@@ -6,6 +6,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "likes", schema = "nutella", catalog = "")
 @IdClass(LikesEntityPK.class)
+@NamedQueries({
+        @NamedQuery(
+                name = "LikesEntity.GetLikes",
+                query = "select l from LikesEntity l where l.postId = :postId"
+        )
+})
 public class LikesEntity {
     private long userId;
     private long postId;

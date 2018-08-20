@@ -73,4 +73,38 @@ public class WebApplicationController {
 
     }
 
+    @POST
+    @Path("job/insert")
+    public InsertJobResponse InsertJob(InsertJobRequest request){
+
+        return service.InsertJob(request);
+
+    }
+
+    @POST
+    @Path("post/like")
+    public LikeResponse Like(LikeRequest request){
+
+        return service.Like(request);
+
+    }
+
+    @POST
+    @Path("post/comment")
+    public CommentResponse Comment(CommentRequest request){
+
+        return service.Comment(request);
+
+    }
+
+    @GET
+    @Path("post/getposts/{userId}")
+    public GetPostsResponse GetPosts(@PathParam("userId") final long userId){
+
+        GetPostsRequest request = new GetPostsRequest(userId);
+
+        return service.GetPosts(request);
+
+    }
+
 }

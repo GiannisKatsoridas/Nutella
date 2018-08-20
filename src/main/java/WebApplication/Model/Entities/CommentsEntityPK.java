@@ -8,6 +8,17 @@ import java.util.Objects;
 public class CommentsEntityPK implements Serializable {
     private long userId;
     private long postId;
+    private java.sql.Timestamp timeStamp;
+
+    @Column(name = "Timestamp")
+    @Id
+    public java.sql.Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(java.sql.Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     @Column(name = "UserID")
     @Id
@@ -35,11 +46,12 @@ public class CommentsEntityPK implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         CommentsEntityPK that = (CommentsEntityPK) o;
         return userId == that.userId &&
-                postId == that.postId;
+                postId == that.postId &&
+                timeStamp == that.timeStamp;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, postId);
+        return Objects.hash(userId, postId, timeStamp);
     }
 }

@@ -2,14 +2,33 @@ package WebApplication.Model.Entities;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments", schema = "nutella", catalog = "")
 @IdClass(CommentsEntityPK.class)
+@NamedQueries({
+        @NamedQuery(
+                name = "CommentsEntity.GetComments",
+                query = "select c from CommentsEntity c where c.postId = :postId"
+        )
+})
 public class CommentsEntity {
     private long userId;
     private long postId;
     private String text;
+
+    @Id
+    @Column(name = "Timestamp")
+    public java.sql.Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(java.sql.Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    private java.sql.Timestamp timeStamp;
 
     @Id
     @Column(name = "UserID")
@@ -48,11 +67,12 @@ public class CommentsEntity {
         CommentsEntity that = (CommentsEntity) o;
         return userId == that.userId &&
                 postId == that.postId &&
+                timeStamp == that.timeStamp &&
                 Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, postId, text);
+        return Objects.hash(userId, postId, text, timeStamp);
     }
 }
