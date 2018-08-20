@@ -23,6 +23,13 @@ public class DbQueriesHelper {
         return user;
     }
 
+    public static List<UsersEntity> getUsersByEmail(EntityManager em, String email){
+
+        List<UsersEntity> usersByEmail = em.createNamedQuery("UsersEntity.findByEmail").setParameter("email", email).getResultList();
+
+        return usersByEmail;
+    }
+
     public static long getLastUserId(EntityManager em){
 
         Query query = em.createQuery("select t from UsersEntity t order by t.id desc");
