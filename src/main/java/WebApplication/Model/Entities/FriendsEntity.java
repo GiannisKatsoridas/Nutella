@@ -6,6 +6,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "friends", schema = "nutella", catalog = "")
 @IdClass(FriendsEntityPK.class)
+@NamedQueries({
+    @NamedQuery(
+            name = "FriendsEntity.GetFriendsFromUser1",
+            query = "select u from UsersEntity u join FriendsEntity f on u.id = f.user2 where f.user1 = :userId"
+    ),
+    @NamedQuery(
+            name = "FriendsEntity.GetFriendsFromUser2",
+            query = "select u from UsersEntity u join FriendsEntity f on u.id = f.user1 where f.user2 = :userId"
+    )
+})
 public class FriendsEntity {
     private long user1;
     private long user2;

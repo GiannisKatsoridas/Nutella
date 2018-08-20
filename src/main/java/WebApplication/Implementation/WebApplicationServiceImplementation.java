@@ -4,7 +4,9 @@ import WebApplication.Implementation.Database.DbQueries;
 import WebApplication.Implementation.Database.DbQueriesHelper;
 import WebApplication.Implementation.Database.JPAResource;
 import WebApplication.Interface.*;
+import WebApplication.Model.Entities.MediaEntity;
 import WebApplication.Model.Entities.PicturesEntity;
+import WebApplication.Model.Entities.PostsEntity;
 import WebApplication.Model.Entities.UsersEntity;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -31,12 +33,12 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         long id;
 
-        UsersEntity user = DbQueriesHelper.createUsersEntity(new UsersEntity(), request);
+        UsersEntity user = DbQueriesHelper.CreateUsersEntity(new UsersEntity(), request);
 
         id = db.InsertUser(user);
 
         if(id>0) {
-            PicturesEntity picture = DbQueriesHelper.createPicturesEntity(new PicturesEntity(), id, request.getImage());
+            PicturesEntity picture = DbQueriesHelper.CreatePicturesEntity(new PicturesEntity(), id, request.getImage());
             id = db.InsertPicture(picture);
         }
 
@@ -65,5 +67,38 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         PicturesEntity picture = db.GetPicture(request.getUserId());
 
         return new GetInfoResponse(user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink());
+    }
+
+    public InsertPostResponse InsertPost(InsertPostRequest request){
+
+        PostsEntity post = DbQueriesHelper.CreatePost(new PostsEntity(), request);
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        em.getTransaction().begin();
+
+        long postId = db.InsertPost(em, post);
+
+        List<String> media = request.getMedia();
+
+        for(int i=0; i<media.size() && postId!=-1; i++){
+            postId = db.InsertMedia(em, postId, media.get(i));
+        }
+
+        if(postId != -1){
+            em.getTransaction().commit();
+        }
+        else{
+            em.getTransaction().rollback();
+        }
+
+        return new InsertPostResponse(postId);
+    }
+
+    public GetConnectionsResponse GetConnections(GetConnectionsRequest request){
+
+        List<UsersEntity> users = db.GetConnections(request.getUserId());
+
+        return new GetConnectionsResponse(users);
+
     }
 }

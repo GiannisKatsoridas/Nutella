@@ -55,5 +55,22 @@ public class WebApplicationController {
 
     }
 
+    @POST
+    @Path("post/insert")
+    public InsertPostResponse InsertPost(InsertPostRequest request){
+
+        return service.InsertPost(request);
+
+    }
+
+    @GET
+    @Path("user/getconnections/{userid}")
+    public GetConnectionsResponse GetConnections(@PathParam("userid") final long userId){
+
+        GetConnectionsRequest request = new GetConnectionsRequest(userId);
+
+        return service.GetConnections(request);
+
+    }
 
 }

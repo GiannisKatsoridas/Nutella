@@ -13,4 +13,7 @@ public interface WebApplicationServiceInterface {
 
     GetInfoResponse GetInfo(GetInfoRequest request);
 
+    InsertPostResponse InsertPost(InsertPostRequest request);
+
+    GetConnectionsResponse GetConnections(GetConnectionsRequest request);
 }

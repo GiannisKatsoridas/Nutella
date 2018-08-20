@@ -17,12 +17,12 @@ public class DbQueries {
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
-        List<UsersEntity> usersByEmail = DbQueriesHelper.getUsersByEmail(em, user.getEmail());
+        List<UsersEntity> usersByEmail = DbQueriesHelper.GetUsersByEmail(em, user.getEmail());
         if(usersByEmail.size() != 0){
             return 0;
         }
 
-        long id = DbQueriesHelper.getLastUserId(em);
+        long id = DbQueriesHelper.GetLastUserId(em);
 
         user.setId(id);
 
@@ -126,6 +126,52 @@ public class DbQueries {
         em.close();
 
         return pictures.get(0);
+    }
+
+
+    public long InsertPost(EntityManager em, PostsEntity post){
+
+        long id = DbQueriesHelper.GetLastPostId(em);
+        post.setId(id);
+
+
+        try{
+            em.persist(post);
+        }
+        catch(PersistenceException e){
+            id = -1;
+        }
+
+        return id;
+    }
+
+
+    public long InsertMedia(EntityManager em, long postId, String link){
+
+        MediaEntity media = DbQueriesHelper.CreateMedia(new MediaEntity(), postId, link);
+
+        try {
+            em.persist(media);
+        }
+        catch (PersistenceException e){
+            postId = -1;
+        }
+
+        return postId;
+    }
+
+
+    public List<UsersEntity> GetConnections(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> connections1 = em.createNamedQuery("FriendsEntity.GetFriendsFromUser1").setParameter("userId", userId).getResultList();
+        List<UsersEntity> connections2 = em.createNamedQuery("FriendsEntity.GetFriendsFromUser2").setParameter("userId", userId).getResultList();
+
+        connections1.addAll(connections2);
+
+        return connections1;
+
     }
 
 }
