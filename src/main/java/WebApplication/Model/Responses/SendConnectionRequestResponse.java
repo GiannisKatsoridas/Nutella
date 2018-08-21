@@ -4,9 +4,7 @@ package WebApplication.Model.Responses;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class LikeResponse {
-
-    ///If notificationId == -1 then there was an internal server error
+public class SendConnectionRequestResponse {
 
     private long notificationId;
 
@@ -18,7 +16,7 @@ public class LikeResponse {
         this.notificationId = notificationId;
     }
 
-    public LikeResponse(long notificationId) {
+    public SendConnectionRequestResponse(long notificationId) {
         this.notificationId = notificationId;
     }
 }

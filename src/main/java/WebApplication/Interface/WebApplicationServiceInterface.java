@@ -32,4 +32,10 @@ public interface WebApplicationServiceInterface {
     JobApplicationResponse JobApplication(JobApplicationRequest request);
 
     GetMyApplicantsResponse GetMyApplicants(GetMyApplicantsRequest request);
+
+    GetMyJobsResponse GetMyJobs(GetMyJobsRequest request);
+
+    EditJobResponse EditJob(EditJobRequest request);
+
+    SendConnectionRequestResponse SendConnectionRequest(SendConnectionRequestRequest request);
 }

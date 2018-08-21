@@ -142,4 +142,29 @@ public class WebApplicationController {
         return service.GetMyApplicants(request);
     }
 
+    @GET
+    @Path("job/getmyjobs/{userId}")
+    public GetMyJobsResponse GetMyJobs(@PathParam("userId") final long userId){
+
+        GetMyJobsRequest request = new GetMyJobsRequest(userId);
+
+        return service.GetMyJobs(request);
+    }
+
+    @POST
+    @Path("job/edit")
+    public EditJobResponse EditJob(EditJobRequest request){
+
+        return service.EditJob(request);
+
+    }
+
+    @POST
+    @Path("connection/sendrequest")
+    public SendConnectionRequestResponse SendConnectionRequest(SendConnectionRequestRequest request){
+
+        return service.SendConnectionRequest(request);
+
+    }
+
 }

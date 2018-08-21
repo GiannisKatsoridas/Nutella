@@ -117,4 +117,64 @@ public class DbQueriesHelper {
 
         return ja;
     }
+
+    public static JobsEntity GetJobById(EntityManager em, long jobId){
+
+        JobsEntity job = em.find(JobsEntity.class, jobId);
+
+        return job;
+    }
+
+    public static FriendrequestEntity CreateConnectionRequest(FriendrequestEntity fr, long sender, long receiver){
+
+        fr.setSender(sender);
+        fr.setReceiver(receiver);
+
+        return fr;
+    }
+
+    public static NotificationsEntity CreateNotification(NotificationsEntity not, long id, long userFrom, long userTo, int category, Timestamp timestamp, long post){
+
+        not.setId(id);
+        not.setCategory(category);
+        not.setPost(post);
+        not.setUserTo(userTo);
+        not.setUserFrom(userFrom);
+        not.setTimestamp(timestamp);
+
+        return not;
+
+    }
+
+    public static long GetLastNotificationId(){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        Query query = em.createQuery("select n from NotificationsEntity n order by n.id desc");
+        List<NotificationsEntity> results = query.setMaxResults(1).getResultList();
+
+        return results.size() == 0 ? 4000000001L : results.get(0).getId()+1;
+    }
+
+    public static long GetUserNotifiedLikes(long postId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("LikesEntity.getUserLiked").setParameter("postId", postId).getResultList();
+
+        em.close();
+
+        return users.get(0).getId();
+    }
+
+    public static long GetUserNotifiedComments(long postId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("CommentsEntity.getUserCommented").setParameter("postId", postId).getResultList();
+
+        em.close();
+
+        return users.get(0).getId();
+    }
 }

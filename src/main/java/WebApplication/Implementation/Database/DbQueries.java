@@ -6,6 +6,7 @@ import WebApplication.Model.Responses.*;
 import WebApplication.Model.Entities.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -318,7 +319,7 @@ public class DbQueries {
     }
 
 
-    public List<JobsEntity> GetJobs(long userId){
+    public List<JobsEntity> GetJobsForUser(long userId){
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
@@ -374,5 +375,132 @@ public class DbQueries {
         em.close();
 
         return result;
+    }
+
+
+    public List<JobsEntity> GetJobsByUser(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<JobsEntity> jobs = em.createNamedQuery("JobsEntity.getJobByUser").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return jobs;
+    }
+
+
+    public boolean EditJob(long jobId, String jobTitle, String jobDescription){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        JobsEntity job = DbQueriesHelper.GetJobById(em, jobId);
+
+        tx.begin();
+        try{
+            job.setTitle(jobTitle);
+            job.setDescription(jobDescription);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public boolean InsertConnectionRequest(FriendrequestEntity fr){
+
+        boolean success;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(fr);
+            tx.commit();
+            success = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            success = false;
+        }
+
+        return success;
+
+    }
+
+
+    private long InsertNotification(NotificationsEntity notification){
+
+        long result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(notification);
+            tx.commit();
+            result = notification.getId();
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = -1;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public long NotifyLike(long userId, long postId){
+
+        long id = DbQueriesHelper.GetLastNotificationId();
+        long userTo = DbQueriesHelper.GetUserNotifiedLikes(postId);
+        java.sql.Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        NotificationsEntity not = DbQueriesHelper.CreateNotification(new NotificationsEntity(), id, userId, userTo, 1, timestamp, postId);
+
+        long notId = InsertNotification(not);
+
+        return notId;
+    }
+
+
+    public long NotifyComment(long userId, long postId){
+
+        long id = DbQueriesHelper.GetLastNotificationId();
+        long userTo = DbQueriesHelper.GetUserNotifiedComments(postId);
+        java.sql.Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        NotificationsEntity not = DbQueriesHelper.CreateNotification(new NotificationsEntity(), id, userId, userTo, 2, timestamp, postId);
+
+        long notId = InsertNotification(not);
+
+        return notId;
+    }
+
+
+    public long NotifyConnectionRequest(long sender, long receiver){
+
+        long id = DbQueriesHelper.GetLastNotificationId();
+        java.sql.Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        NotificationsEntity not = DbQueriesHelper.CreateNotification(new NotificationsEntity(), id, sender, receiver, 3, timestamp, 0);
+
+        long notId = InsertNotification(not);
+
+        return notId;
     }
 }

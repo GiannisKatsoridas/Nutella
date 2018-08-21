@@ -6,17 +6,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CommentResponse {
 
-    private boolean result;
+    private long notificationId;
 
-    public boolean isResult() {
-        return result;
+    public long getNotificationId() {
+        return notificationId;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void setNotificationId(long notificationId) {
+        this.notificationId = notificationId;
     }
 
-    public CommentResponse(boolean result) {
-        this.result = result;
+    public CommentResponse(long notificationId) {
+        this.notificationId = notificationId;
     }
 }

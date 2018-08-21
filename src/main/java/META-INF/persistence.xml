@@ -17,8 +17,9 @@
         <class>WebApplication.Model.Entities.PostsEntity</class>
         <class>WebApplication.Model.Entities.SkillsEntity</class>
         <class>WebApplication.Model.Entities.UsersEntity</class>
+        <class>WebApplication.Model.Entities.NotificationsEntity</class>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/Nutella"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/nutella"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>

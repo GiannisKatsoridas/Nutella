@@ -125,8 +125,16 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         LikesEntity like = DbQueriesHelper.CreateLike(new LikesEntity(), request);
 
         boolean result = db.Like(like);
+        long id;
 
-        return new LikeResponse(result);
+        if(result) {
+            id = db.NotifyLike(request.getUserId(), request.getPostId());
+        }
+        else{
+            id = -1;
+        }
+
+        return new LikeResponse(id);
     }
 
     public CommentResponse Comment(CommentRequest request) {
@@ -134,8 +142,16 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         CommentsEntity like = DbQueriesHelper.CreateComment(new CommentsEntity(), request);
 
         boolean result = db.Comment(like);
+        long id;
 
-        return new CommentResponse(result);
+        if(result) {
+            id = db.NotifyComment(request.getUserId(), request.getPostId());
+        }
+        else{
+            id = -1;
+        }
+
+        return new CommentResponse(id);
     }
 
     public GetPostsResponse GetPosts(GetPostsRequest request) {
@@ -167,7 +183,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
     public GetJobsResponse GetJobs(GetJobsRequest request) {
 
-        List<JobsEntity> results = db.GetJobs(request.getUserId());
+        List<JobsEntity> results = db.GetJobsForUser(request.getUserId());
 
         return new GetJobsResponse(results);
     }
@@ -186,5 +202,36 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         List<UserInfo> users = db.GetJobApplicants(request.getJobId());
 
         return new GetMyApplicantsResponse(users);
+    }
+
+    public GetMyJobsResponse GetMyJobs(GetMyJobsRequest request) {
+
+        List<JobsEntity> jobs = db.GetJobsByUser(request.getUserId());
+
+        return new GetMyJobsResponse(jobs);
+    }
+
+    public EditJobResponse EditJob(EditJobRequest request) {
+
+        boolean result = db.EditJob(request.getJobId(), request.getJobTitle(), request.getJobDescription());
+
+        return new EditJobResponse(result);
+    }
+
+    public SendConnectionRequestResponse SendConnectionRequest(SendConnectionRequestRequest request) {
+
+        FriendrequestEntity fr = DbQueriesHelper.CreateConnectionRequest(new FriendrequestEntity(), request.getSender(), request.getReceiver());
+
+        boolean success = db.InsertConnectionRequest(fr);
+        long id;
+
+        if(success) {
+            id = db.NotifyConnectionRequest(request.getSender(), request.getReceiver());
+        }
+        else{
+            id = -1;
+        }
+
+        return new SendConnectionRequestResponse(id);
     }
 }
