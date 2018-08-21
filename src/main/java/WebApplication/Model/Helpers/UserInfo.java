@@ -1,15 +1,8 @@
-package WebApplication.Model.Responses;
+package WebApplication.Model.Helpers;
 
+public class UserInfo {
 
-import WebApplication.Model.Helpers.UserInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class GetInfoResponse {
-
-    ///In case of an error all the values would be null
-
-    /*private String firstName;
+    private String firstName;
     private String lastName;
     private String email;
     private String image;
@@ -46,24 +39,10 @@ public class GetInfoResponse {
         this.image = image;
     }
 
-    public GetInfoResponse(String firstName, String lastName, String email, String image) {
+    public UserInfo(String firstName, String lastName, String email, String image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.image = image;
-    }*/
-
-    private UserInfo userInfo;
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public GetInfoResponse(UserInfo userInfo) {
-        this.userInfo = userInfo;
     }
 }

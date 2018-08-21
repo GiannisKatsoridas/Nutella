@@ -1,10 +1,12 @@
 package WebApplication.Implementation.Database;
 
+import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 import WebApplication.Model.Entities.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbQueries {
@@ -159,7 +161,9 @@ public class DbQueries {
     }
 
 
-    public List<UsersEntity> GetConnections(long userId){
+    public List<UserInfo> GetConnections(long userId){
+
+        List<UserInfo> userInfo = new ArrayList<UserInfo>();
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
@@ -170,7 +174,14 @@ public class DbQueries {
 
         em.close();
 
-        return connections1;
+        for(UsersEntity u: connections1){
+
+            String image = GetPicture(u.getId()).getLink();
+            userInfo.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
+
+        }
+
+        return userInfo;
 
     }
 
@@ -286,7 +297,9 @@ public class DbQueries {
     }
 
 
-    public List<UsersEntity> Search(String query){
+    public List<UserInfo> Search(String query){
+
+        List<UserInfo> userInfo = new ArrayList<UserInfo>();
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
@@ -294,7 +307,14 @@ public class DbQueries {
 
         em.close();
 
-        return results;
+        for(UsersEntity u: results){
+
+            String image = GetPicture(u.getId()).getLink();
+            userInfo.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
+
+        }
+
+        return userInfo;
     }
 
 
@@ -329,6 +349,26 @@ public class DbQueries {
         catch (PersistenceException e){
             tx.rollback();
             result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public List<UserInfo> GetJobApplicants(long jobId){
+
+        List<UserInfo> result = new ArrayList<UserInfo>();
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("JobsEntity.getJobApplicants").setParameter("jobId", jobId).getResultList();
+
+        for(UsersEntity u: users){
+
+            String image = GetPicture(u.getId()).getLink();
+            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
         }
 
         em.close();

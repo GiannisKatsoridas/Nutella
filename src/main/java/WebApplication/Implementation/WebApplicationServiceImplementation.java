@@ -6,6 +6,7 @@ import WebApplication.Implementation.Database.JPAResource;
 import WebApplication.Interface.*;
 import WebApplication.Model.Entities.*;
 import WebApplication.Model.Helpers.Article;
+import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 
@@ -66,7 +67,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         UsersEntity user = db.GetUserById(request.getUserId());
         PicturesEntity picture = db.GetPicture(request.getUserId());
 
-        return new GetInfoResponse(user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink());
+        return new GetInfoResponse(new UserInfo(user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink()));
     }
 
     public InsertPostResponse InsertPost(InsertPostRequest request){
@@ -97,7 +98,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
     public GetConnectionsResponse GetConnections(GetConnectionsRequest request){
 
-        List<UsersEntity> users = db.GetConnections(request.getUserId());
+        List<UserInfo> users = db.GetConnections(request.getUserId());
 
         return new GetConnectionsResponse(users);
 
@@ -159,7 +160,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
     public SearchResponse Search(SearchRequest request) {
 
-        List<UsersEntity> results = db.Search(request.getQuery());
+        List<UserInfo> results = db.Search(request.getQuery());
 
         return new SearchResponse(results);
     }
@@ -178,5 +179,12 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         boolean success = db.InsertJobApplication(ja);
 
         return new JobApplicationResponse(success);
+    }
+
+    public GetMyApplicantsResponse GetMyApplicants(GetMyApplicantsRequest request){
+
+        List<UserInfo> users = db.GetJobApplicants(request.getJobId());
+
+        return new GetMyApplicantsResponse(users);
     }
 }

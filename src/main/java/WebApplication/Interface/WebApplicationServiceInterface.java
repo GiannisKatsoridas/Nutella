@@ -30,4 +30,6 @@ public interface WebApplicationServiceInterface {
     GetJobsResponse GetJobs(GetJobsRequest request);
 
     JobApplicationResponse JobApplication(JobApplicationRequest request);
+
+    GetMyApplicantsResponse GetMyApplicants(GetMyApplicantsRequest request);
 }

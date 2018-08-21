@@ -13,6 +13,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "JobsEntity.getJobsFrom2",
                 query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user2 join JobsEntity j on j.creator = f.user1 where f.user2 = :userId"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.getJobApplicants",
+                query = "select u from JobsEntity j join JobapplicationsEntity a on j.id = a.job join UsersEntity u on a.applicant = u.id where j.id = :jobId"
         )
 })
 public class JobsEntity {

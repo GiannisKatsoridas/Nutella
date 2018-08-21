@@ -133,4 +133,13 @@ public class WebApplicationController {
 
     }
 
+    @GET
+    @Path("job/getapplicants/{jobId}")
+    public GetMyApplicantsResponse GetMyApplicants(@PathParam("jobId") final long jobId){
+
+        GetMyApplicantsRequest request = new GetMyApplicantsRequest(jobId);
+
+        return service.GetMyApplicants(request);
+    }
+
 }
