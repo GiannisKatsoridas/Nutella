@@ -24,4 +24,10 @@ public interface WebApplicationServiceInterface {
     CommentResponse Comment(CommentRequest request);
 
     GetPostsResponse GetPosts(GetPostsRequest request);
+
+    SearchResponse Search(SearchRequest request);
+
+    GetJobsResponse GetJobs(GetJobsRequest request);
+
+    JobApplicationResponse JobApplication(JobApplicationRequest request);
 }

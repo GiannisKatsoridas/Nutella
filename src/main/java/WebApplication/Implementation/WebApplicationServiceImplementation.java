@@ -156,4 +156,27 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         return new GetPostsResponse(articles);
     }
+
+    public SearchResponse Search(SearchRequest request) {
+
+        List<UsersEntity> results = db.Search(request.getQuery());
+
+        return new SearchResponse(results);
+    }
+
+    public GetJobsResponse GetJobs(GetJobsRequest request) {
+
+        List<JobsEntity> results = db.GetJobs(request.getUserId());
+
+        return new GetJobsResponse(results);
+    }
+
+    public JobApplicationResponse JobApplication(JobApplicationRequest request) {
+
+        JobapplicationsEntity ja = DbQueriesHelper.CreateJobApplication(new JobapplicationsEntity(), request.getUserId(), request.getJobId());
+
+        boolean success = db.InsertJobApplication(ja);
+
+        return new JobApplicationResponse(success);
+    }
 }

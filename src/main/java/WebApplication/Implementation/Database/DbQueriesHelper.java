@@ -110,4 +110,12 @@ public class DbQueriesHelper {
         return comment;
     }
 
+    public static JobapplicationsEntity CreateJobApplication(JobapplicationsEntity ja, long userId, long jobId){
+
+        ja.setApplicant(userId);
+        ja.setJob(jobId);
+
+        return ja;
+    }
+
 }

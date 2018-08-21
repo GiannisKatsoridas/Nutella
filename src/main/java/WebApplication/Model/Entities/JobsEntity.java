@@ -5,6 +5,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "jobs", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "JobsEntity.getJobsFrom1",
+                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user1 join JobsEntity j on j.creator = f.user2 where f.user1 = :userId"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.getJobsFrom2",
+                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user2 join JobsEntity j on j.creator = f.user1 where f.user2 = :userId"
+        )
+})
 public class JobsEntity {
     private long id;
     private long creator;

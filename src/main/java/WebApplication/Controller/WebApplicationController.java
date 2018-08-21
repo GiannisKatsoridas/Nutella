@@ -107,4 +107,30 @@ public class WebApplicationController {
 
     }
 
+    @GET
+    @Path("user/search/{query}")
+    public SearchResponse Search(@PathParam("query") final String query){
+
+        SearchRequest request = new SearchRequest(query);
+
+        return service.Search(request);
+    }
+
+    @GET
+    @Path("job/getjobs/{userId}")
+    public GetJobsResponse GetJobs(@PathParam("userId") final long userId){
+
+        GetJobsRequest request = new GetJobsRequest(userId);
+
+        return service.GetJobs(request);
+    }
+
+    @POST
+    @Path("job/apply")
+    public JobApplicationResponse JobApplication(JobApplicationRequest request){
+
+        return service.JobApplication(request);
+
+    }
+
 }

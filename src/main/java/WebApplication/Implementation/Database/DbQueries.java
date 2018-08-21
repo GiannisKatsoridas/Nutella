@@ -284,4 +284,55 @@ public class DbQueries {
         return comments;
 
     }
+
+
+    public List<UsersEntity> Search(String query){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> results = em.createNamedQuery("UsersEntity.search").setParameter("search", "%"+query+"%").getResultList();
+
+        em.close();
+
+        return results;
+    }
+
+
+    public List<JobsEntity> GetJobs(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<JobsEntity> results1 = em.createNamedQuery("JobsEntity.getJobsFrom1").setParameter("userId", userId).getResultList();
+        List<JobsEntity> results2 = em.createNamedQuery("JobsEntity.getJobsFrom2").setParameter("userId", userId).getResultList();
+
+        results1.addAll(results2);
+
+        em.close();
+
+        return results1;
+    }
+
+
+    public boolean InsertJobApplication(JobapplicationsEntity ja){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        boolean result;
+
+        try{
+            em.persist(ja);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
 }
