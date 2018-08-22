@@ -5,6 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "friendrequest", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "FriendrequestsEntity.getConnectionRequests",
+                query = "select u from UsersEntity u join FriendrequestEntity f on f.sender = u.id where f.receiver = :userId"
+        )
+})
 @IdClass(FriendrequestEntityPK.class)
 public class FriendrequestEntity {
     private long sender;

@@ -503,4 +503,195 @@ public class DbQueries {
 
         return notId;
     }
+
+
+    public List<UsersEntity> GetConnectionRequests(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> users = em.createNamedQuery("FriendrequestsEntity.getConnectionRequests").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return users;
+    }
+
+
+    public boolean DeleteConnectionRequest(long sender, long receiver){
+
+        FriendrequestEntityPK keys = new FriendrequestEntityPK();
+        keys.setSender(sender);
+        keys.setReceiver(receiver);
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        FriendrequestEntity fr = em.find(FriendrequestEntity.class, keys);
+
+        tx.begin();
+
+        try{
+            em.remove(fr);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public boolean InsertConnection(long sender, long receiver){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        FriendsEntity f = DbQueriesHelper.CreateFriends(new FriendsEntity(), sender, receiver);
+
+        tx.begin();
+
+        try{
+            em.persist(f);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public long NotifyAccept(long sender, long receiver){
+
+        long id = DbQueriesHelper.GetLastNotificationId();
+        java.sql.Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        NotificationsEntity not = DbQueriesHelper.CreateNotification(new NotificationsEntity(), id, sender, receiver, 4, timestamp, 0);
+
+        long notId = InsertNotification(not);
+
+        return notId;
+    }
+
+
+    public long InsertExperience(ExperienceEntity exp){
+
+        long result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(exp);
+            tx.commit();
+            result = exp.getExperienceId();
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = -1;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public long InsertEducation(EducationEntity edu){
+
+        long result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(edu);
+            tx.commit();
+            result = edu.getEducationId();
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = -1;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public long InsertSkill(SkillsEntity sk){
+
+        long result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(sk);
+            tx.commit();
+            result = sk.getSkillId();
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = -1;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public List<ExperienceEntity> GetExperience(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<ExperienceEntity> experience = em.createNamedQuery("ExperienceEntity.GetExperience").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return experience;
+    }
+
+
+    public List<EducationEntity> GetEducation(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<EducationEntity> education = em.createNamedQuery("EducationEntity.GetEducation").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return education;
+    }
+
+
+    public List<SkillsEntity> GetSkills(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<SkillsEntity> skills = em.createNamedQuery("SkillsEntity.GetSkills").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return skills;
+    }
 }

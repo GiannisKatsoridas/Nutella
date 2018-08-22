@@ -6,6 +6,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "education", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "EducationEntity.GetEducation",
+                query = "select e from EducationEntity e where e.userId = :userId"
+        )
+})
 public class EducationEntity implements Serializable {
     private long userId;
     private long educationId;

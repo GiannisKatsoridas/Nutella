@@ -234,4 +234,92 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         return new SendConnectionRequestResponse(id);
     }
+
+    public GetConnectionRequestsResponse GetConnectionRequests(GetConnectionRequestsRequest request) {
+
+        List<UsersEntity> connectionRequests = db.GetConnectionRequests(request.getUserId());
+
+        List<UserInfo> result = new ArrayList<UserInfo>();
+        PicturesEntity image;
+
+        for(UsersEntity u: connectionRequests){
+
+            image = db.GetPicture(u.getId());
+            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image.getLink()));
+
+        }
+
+        return new GetConnectionRequestsResponse(result);
+    }
+
+    public AcceptConnectionResponse AcceptConnection(AcceptConnectionRequest request){
+
+        long id;
+
+        boolean result = db.DeleteConnectionRequest(request.getUserFromId(), request.getUserToId());
+
+        if(!result){
+            return new AcceptConnectionResponse(-1);
+        }
+
+        result = db.InsertConnection(request.getUserFromId(), request.getUserToId());
+
+        if(result) {
+            id = db.NotifyAccept(request.getUserFromId(), request.getUserToId());
+        }
+        else{
+            id = -1;
+        }
+
+        return new AcceptConnectionResponse(id);
+    }
+
+    public RejectConnectionResponse RejectConnection(RejectConnectionRequest request) {
+
+        boolean result = db.DeleteConnectionRequest(request.getUserFromId(), request.getUserToId());
+
+        return new RejectConnectionResponse(result);
+    }
+
+    public PostExperienceResponse PostExperience(PostExperienceRequest request) {
+
+        long id = DbQueriesHelper.GetLastExperienceId();
+
+        ExperienceEntity exp = DbQueriesHelper.CreateExperience(new ExperienceEntity(), id, request.getUserId(), request.getCompanyTitle(), request.getPosition(), request.getDateFrom(), request.getDateTo());
+
+        id = db.InsertExperience(exp);
+
+        return new PostExperienceResponse(id);
+    }
+
+    public PostEducationResponse PostEducation(PostEducationRequest request) {
+
+        long id = DbQueriesHelper.GetLastEducationId();
+
+        EducationEntity edu = DbQueriesHelper.CreateEducation(new EducationEntity(), id, request.getUserId(), request.getInstitution(), request.getDegree(), request.getYearFrom(), request.getYearTo());
+
+        id = db.InsertEducation(edu);
+
+        return new PostEducationResponse(id);
+    }
+
+    public PostSkillResponse PostSkill(PostSkillRequest request) {
+
+        long id = DbQueriesHelper.GetLastSkillId();
+
+        SkillsEntity sk = DbQueriesHelper.CreateSkill(new SkillsEntity(), id, request.getUserId(), request.getSkill());
+
+        id = db.InsertSkill(sk);
+
+        return new PostSkillResponse(id);
+    }
+
+    public GetPersonalInfoResponse GetPersonalInfo(GetConnectionRequestsRequest request) {
+
+        List<ExperienceEntity> experience = db.GetExperience(request.getUserId());
+        List<EducationEntity> education = db.GetEducation(request.getUserId());
+        List<SkillsEntity> skills = db.GetSkills(request.getUserId());
+
+        return new GetPersonalInfoResponse(experience, education, skills);
+    }
 }

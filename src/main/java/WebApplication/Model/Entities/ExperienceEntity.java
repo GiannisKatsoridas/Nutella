@@ -6,6 +6,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "experience", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+            name = "ExperienceEntity.GetExperience",
+            query = "select e from ExperienceEntity e where e.userId = :userId"
+        )
+})
 public class ExperienceEntity {
     private long userId;
     private long experienceId;

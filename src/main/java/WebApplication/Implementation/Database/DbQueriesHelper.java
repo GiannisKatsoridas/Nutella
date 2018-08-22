@@ -4,6 +4,7 @@ import WebApplication.Model.Entities.*;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.RegisterResponse;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.sql.Timestamp;
@@ -153,6 +154,8 @@ public class DbQueriesHelper {
         Query query = em.createQuery("select n from NotificationsEntity n order by n.id desc");
         List<NotificationsEntity> results = query.setMaxResults(1).getResultList();
 
+        em.close();
+
         return results.size() == 0 ? 4000000001L : results.get(0).getId()+1;
     }
 
@@ -176,5 +179,82 @@ public class DbQueriesHelper {
         em.close();
 
         return users.get(0).getId();
+    }
+
+    public static FriendsEntity CreateFriends(FriendsEntity f, long sender, long receiver){
+
+        f.setUser1(sender);
+        f.setUser2(receiver);
+
+        return f;
+    }
+
+    public static long GetLastExperienceId(){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        Query query = em.createQuery("select e from ExperienceEntity e order by e.experienceId desc");
+        List<ExperienceEntity> results = query.setMaxResults(1).getResultList();
+
+        em.close();
+
+        return results.size() == 0 ? 5000000001L : results.get(0).getExperienceId()+1;
+    }
+
+    public static ExperienceEntity CreateExperience(ExperienceEntity exp, long experienceId, long userId, String companyTitle, String position, java.sql.Date dateFrom, java.sql.Date dateTo){
+
+        exp.setExperienceId(experienceId);
+        exp.setUserId(userId);
+        exp.setCompanyTitle(companyTitle);
+        exp.setPosition(position);
+        exp.setDateFrom(dateFrom);
+        exp.setDateTo(dateTo);
+
+        return exp;
+    }
+
+    public static long GetLastEducationId(){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        Query query = em.createQuery("select e from EducationEntity e order by e.educationId desc");
+        List<EducationEntity> results = query.setMaxResults(1).getResultList();
+
+        em.close();
+
+        return results.size() == 0 ? 6000000001L : results.get(0).getEducationId()+1;
+    }
+
+    public static EducationEntity CreateEducation(EducationEntity edu, long educationId, long userId, String institution, String degree, String yearFrom, String yearTo){
+
+        edu.setEducationId(educationId);
+        edu.setUserId(userId);
+        edu.setInstitution(institution);
+        edu.setDegree(degree);
+        edu.setYearFrom(yearFrom);
+        edu.setYearTo(yearTo);
+
+        return edu;
+    }
+
+    public static long GetLastSkillId(){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        Query query = em.createQuery("select s from SkillsEntity s order by s.skillId desc");
+        List<SkillsEntity> results = query.setMaxResults(1).getResultList();
+
+        em.close();
+
+        return results.size() == 0 ? 7000000001L : results.get(0).getSkillId()+1;
+    }
+
+    public static SkillsEntity CreateSkill(SkillsEntity sk, long skillId, long userId, String skill){
+
+        sk.setSkillId(skillId);
+        sk.setUserId(userId);
+        sk.setSkill(skill);
+
+        return sk;
     }
 }

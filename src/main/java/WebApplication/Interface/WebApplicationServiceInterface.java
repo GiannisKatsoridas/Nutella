@@ -38,4 +38,18 @@ public interface WebApplicationServiceInterface {
     EditJobResponse EditJob(EditJobRequest request);
 
     SendConnectionRequestResponse SendConnectionRequest(SendConnectionRequestRequest request);
+
+    GetConnectionRequestsResponse GetConnectionRequests(GetConnectionRequestsRequest request);
+
+    AcceptConnectionResponse AcceptConnection(AcceptConnectionRequest request);
+
+    RejectConnectionResponse RejectConnection(RejectConnectionRequest request);
+
+    PostExperienceResponse PostExperience(PostExperienceRequest request);
+
+    PostEducationResponse PostEducation(PostEducationRequest request);
+
+    PostSkillResponse PostSkill(PostSkillRequest request);
+
+    GetPersonalInfoResponse GetPersonalInfo(GetConnectionRequestsRequest request);
 }

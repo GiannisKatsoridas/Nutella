@@ -5,6 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "skills", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "SkillsEntity.GetSkills",
+                query = "select s from SkillsEntity s where s.userId = :userId"
+        )
+})
 public class SkillsEntity {
     private long userId;
     private long skillId;

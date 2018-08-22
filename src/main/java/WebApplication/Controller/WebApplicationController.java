@@ -167,4 +167,61 @@ public class WebApplicationController {
 
     }
 
+    @GET
+    @Path("connection/getrequests/{userId}")
+    public GetConnectionRequestsResponse GetConnectionRequests(@PathParam("userId") final long userId){
+
+        GetConnectionRequestsRequest request = new GetConnectionRequestsRequest(userId);
+
+        return service.GetConnectionRequests(request);
+    }
+
+    @POST
+    @Path("connection/accept")
+    public AcceptConnectionResponse AcceptConnection(AcceptConnectionRequest request){
+
+        return service.AcceptConnection(request);
+
+    }
+
+    @POST
+    @Path("connection/reject")
+    public RejectConnectionResponse RejectConnection(RejectConnectionRequest request){
+
+        return service.RejectConnection(request);
+
+    }
+
+    @POST
+    @Path("experience/post")
+    public PostExperienceResponse PostExperience(PostExperienceRequest request){
+
+        return service.PostExperience(request);
+
+    }
+
+    @POST
+    @Path("education/post")
+    public PostEducationResponse PostEducation(PostEducationRequest request){
+
+        return service.PostEducation(request);
+
+    }
+
+    @POST
+    @Path("skill/post")
+    public PostSkillResponse PostSkill(PostSkillRequest request){
+
+        return service.PostSkill(request);
+
+    }
+
+    @GET
+    @Path("user/getpersonalinfo/{userId}")
+    public GetPersonalInfoResponse GetPersonalInfo(@PathParam("userId") final long userId){
+
+        GetConnectionRequestsRequest request = new GetConnectionRequestsRequest(userId);
+
+        return service.GetPersonalInfo(request);
+    }
 }
