@@ -322,4 +322,25 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         return new GetPersonalInfoResponse(experience, education, skills);
     }
+
+    public UpdateExperienceResponse UpdateExperience(UpdateExperienceRequest request) {
+
+        boolean result = db.UpdateExperience(request.getExperienceId(), request.getCompanyTitle(), request.getPosition(), request.getDateFrom(), request.getDateTo());
+
+        return new UpdateExperienceResponse(result);
+    }
+
+    public UpdateEducationResponse UpdateEducation(UpdateEducationRequest request) {
+
+        boolean result = db.UpdateEducation(request.getEducationId(), request.getInstitution(), request.getDegree(), request.getYearFrom(), request.getYearTo());
+
+        return new UpdateEducationResponse(result);
+    }
+
+    public UpdateSkillResponse UpdateSkill(UpdateSkillRequest request) {
+
+        boolean result = db.UpdateSkill(request.getSkillId(), request.getSkill());
+
+        return new UpdateSkillResponse(result);
+    }
 }

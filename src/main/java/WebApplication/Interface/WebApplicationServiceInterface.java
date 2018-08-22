@@ -52,4 +52,10 @@ public interface WebApplicationServiceInterface {
     PostSkillResponse PostSkill(PostSkillRequest request);
 
     GetPersonalInfoResponse GetPersonalInfo(GetConnectionRequestsRequest request);
+
+    UpdateExperienceResponse UpdateExperience(UpdateExperienceRequest request);
+
+    UpdateEducationResponse UpdateEducation(UpdateEducationRequest request);
+
+    UpdateSkillResponse UpdateSkill(UpdateSkillRequest request);
 }

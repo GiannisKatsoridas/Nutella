@@ -257,4 +257,25 @@ public class DbQueriesHelper {
 
         return sk;
     }
+
+    public static void UpdateExperience(ExperienceEntity exp, String companyTitle, String position, java.sql.Date dateFrom, java.sql.Date dateTo){
+
+        exp.setCompanyTitle(companyTitle);
+        exp.setPosition(position);
+        exp.setDateFrom(dateFrom);
+        exp.setDateTo(dateTo);
+    }
+
+    public static void UpdateEducation(EducationEntity edu, String institution, String degree, String yearFrom, String yearTo){
+
+        edu.setInstitution(institution);
+        edu.setDegree(degree);
+        edu.setYearFrom(yearFrom);
+        edu.setYearTo(yearTo);
+    }
+
+    public static void UpdateSkill(SkillsEntity sk, String skill){
+
+        sk.setSkill(skill);
+    }
 }

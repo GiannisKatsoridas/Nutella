@@ -694,4 +694,82 @@ public class DbQueries {
 
         return skills;
     }
+
+
+    public boolean UpdateExperience(long experienceId, String companyTitle, String position, java.sql.Date dateFrom, java.sql.Date dateTo){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        ExperienceEntity exp = em.find(ExperienceEntity.class, experienceId);
+
+        try{
+            DbQueriesHelper.UpdateExperience(exp, companyTitle, position, dateFrom, dateTo);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public boolean UpdateEducation(long educationId, String institution, String degree, String yearFrom, String yearTo){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        EducationEntity education = em.find(EducationEntity.class, educationId);
+
+        try{
+            DbQueriesHelper.UpdateEducation(education, institution, degree, yearFrom, yearTo);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public boolean UpdateSkill(long skillId, String skill){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        SkillsEntity sk = em.find(SkillsEntity.class, skillId);
+
+        try{
+            DbQueriesHelper.UpdateSkill(sk, skill);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
 }

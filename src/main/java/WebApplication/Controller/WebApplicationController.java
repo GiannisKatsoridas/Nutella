@@ -224,4 +224,28 @@ public class WebApplicationController {
 
         return service.GetPersonalInfo(request);
     }
+
+    @POST
+    @Path("experience/update")
+    public UpdateExperienceResponse UpdateExperience(UpdateExperienceRequest request){
+
+        return service.UpdateExperience(request);
+
+    }
+
+    @POST
+    @Path("education/update")
+    public UpdateEducationResponse UpdateEducation(UpdateEducationRequest request){
+
+        return service.UpdateEducation(request);
+
+    }
+
+    @POST
+    @Path("skill/update")
+    public UpdateSkillResponse UpdateSkill(UpdateSkillRequest request){
+
+        return service.UpdateSkill(request);
+
+    }
 }
