@@ -343,4 +343,72 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         return new UpdateSkillResponse(result);
     }
+
+    public SendMessageResponse SendMessage(SendMessageRequest request) {
+
+        MessagesEntity message = DbQueriesHelper.CreateMessage(new MessagesEntity(), request.getUserFrom(), request.getUserTo(), request.getMessage());
+
+        boolean result = db.InsertMessage(message);
+
+        return new SendMessageResponse(result);
+    }
+
+    public GetMessagesResponse GetMessages(GetMessagesRequest request) {
+
+        List<MessagesEntity> messages = db.GetMessages(request.getUserId(), request.getFriendId());
+
+        return new GetMessagesResponse(messages);
+    }
+
+    public GetNotificationsResponse GetNotifications(GetNotificationsRequest request) {
+
+        List<NotificationsEntity> notifications = db.GetNotifications(request.getUserId());
+
+        return new GetNotificationsResponse(notifications);
+    }
+
+    public GetConversationsResponse GetConversations(GetConversationsRequest request) {
+
+        List<UserInfo> result = new ArrayList<UserInfo>();
+
+        List<UsersEntity> users = db.GetConversations(request.getUserId());
+
+        for(UsersEntity u: users){
+
+            PicturesEntity picture = db.GetPicture(u.getId());
+            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), picture.getLink()));
+        }
+
+        return new GetConversationsResponse(result);
+    }
+
+    public UpdateEmailResponse UpdateEmail(UpdateEmailRequest request) {
+
+        UsersEntity user = db.GetUserById(request.getUserId());
+
+        if(!user.getPassword().equals(request.getPassword())){
+
+            return new UpdateEmailResponse(0);
+
+        }
+
+        long userId = db.UpdateEmail(request.getUserId(), request.getEmail());
+
+        return new UpdateEmailResponse(userId);
+    }
+
+    public UpdatePasswordResponse UpdatePassword(UpdatePasswordRequest request) {
+
+        UsersEntity user = db.GetUserById(request.getUserId());
+
+        if(!user.getPassword().equals(request.getOldPassword())){
+
+            return new UpdatePasswordResponse(0);
+
+        }
+
+        long id = db.UpdatePassword(request.getUserId(), request.getNewPassword());
+
+        return new UpdatePasswordResponse(id);
+    }
 }

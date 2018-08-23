@@ -248,4 +248,56 @@ public class WebApplicationController {
         return service.UpdateSkill(request);
 
     }
+
+    @POST
+    @Path("message/send")
+    public SendMessageResponse SendMessage(SendMessageRequest request){
+
+        return service.SendMessage(request);
+
+    }
+
+    @GET
+    @Path("message/get/{userId}/{friendId}")
+    public GetMessagesResponse GetMessages(@PathParam("userId") final long userId, @PathParam("friendId") final long friendId){
+
+        GetMessagesRequest request = new GetMessagesRequest(userId, friendId);
+
+        return service.GetMessages(request);
+
+    }
+
+    @GET
+    @Path("notifications/get/{userId}")
+    public GetNotificationsResponse GetNotifications(@PathParam("userId") final long userId){
+
+        GetNotificationsRequest request = new GetNotificationsRequest(userId);
+
+        return service.GetNotifications(request);
+    }
+
+    @GET
+    @Path("user/getconversations/{userId}")
+    public GetConversationsResponse GetConversations(@PathParam("userId") final long userId){
+
+        GetConversationsRequest request = new GetConversationsRequest(userId);
+
+        return service.GetConversations(request);
+    }
+
+    @POST
+    @Path("user/email/update")
+    public UpdateEmailResponse UpdateEmail(UpdateEmailRequest request){
+
+        return service.UpdateEmail(request);
+
+    }
+
+    @POST
+    @Path("user/password/update")
+    public UpdatePasswordResponse UpdatePassword(UpdatePasswordRequest request){
+
+        return service.UpdatePassword(request);
+
+    }
 }

@@ -6,6 +6,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "notifications", schema = "nutella")
+@NamedQuery(
+        name = "NotificationsEntity.GetNotifications",
+        query = "select n from NotificationsEntity n where n.userTo = :userId order by n.timestamp desc"
+)
 public class NotificationsEntity {
     private long id;
     private long userFrom;

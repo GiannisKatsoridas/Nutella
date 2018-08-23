@@ -8,7 +8,11 @@ import WebApplication.Model.Entities.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.lang.System.in;
 
 public class DbQueries {
 
@@ -771,5 +775,122 @@ public class DbQueries {
         em.close();
 
         return result;
+    }
+
+
+    public boolean InsertMessage(MessagesEntity message){
+
+        boolean result;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try{
+            em.persist(message);
+            tx.commit();
+            result = true;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            result = false;
+        }
+
+        em.close();
+
+        return result;
+    }
+
+
+    public List<MessagesEntity> GetMessages(long userId, long friendId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<MessagesEntity> messages = em.createNamedQuery("MessagesEntity.GetMessages").setParameter("userId", userId).setParameter("friendId", friendId).getResultList();
+
+        em.close();
+
+        return messages;
+    }
+
+
+    public List<NotificationsEntity> GetNotifications(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<NotificationsEntity> notifications = em.createNamedQuery("NotificationsEntity.GetNotifications").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return notifications;
+    }
+
+
+    public List<UsersEntity> GetConversations(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<UsersEntity> collection = em.createNamedQuery("UsersEntity.getConversations").setParameter("userId", userId).getResultList();
+
+        Set<UsersEntity> set = new LinkedHashSet<UsersEntity>(collection);
+
+        collection.clear();
+        collection.addAll(set);
+
+        em.close();
+
+        return collection;
+    }
+
+
+    public long UpdateEmail(long userId, String email){
+
+        long id;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        UsersEntity user = em.find(UsersEntity.class, userId);
+
+        try{
+            user.setEmail(email);
+            tx.commit();
+            id = userId;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            id = -1;
+        }
+
+        em.close();
+
+        return id;
+    }
+
+
+    public long UpdatePassword(long userId, String password){
+
+        long id;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        UsersEntity user = em.find(UsersEntity.class, userId);
+
+        try{
+            user.setPassword(password);
+            tx.commit();
+            id = userId;
+        }
+        catch (PersistenceException e){
+            tx.rollback();
+            id = -1;
+        }
+
+        em.close();
+
+        return id;
     }
 }

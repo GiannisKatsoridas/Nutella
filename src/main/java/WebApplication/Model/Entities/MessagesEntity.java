@@ -6,6 +6,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "messages", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "MessagesEntity.GetMessages",
+                query = "select m from MessagesEntity m where (m.userFrom = :userId and m.userTo = :friendId) or (m.userFrom = :friendId and m.userTo = :userId) order by m.timestamp asc"
+        )
+})
 @IdClass(MessagesEntityPK.class)
 public class MessagesEntity {
     private long userFrom;

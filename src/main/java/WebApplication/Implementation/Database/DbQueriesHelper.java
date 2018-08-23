@@ -278,4 +278,14 @@ public class DbQueriesHelper {
 
         sk.setSkill(skill);
     }
+
+    public static MessagesEntity CreateMessage(MessagesEntity message, long userFrom, long userTo, String text){
+
+        message.setUserFrom(userFrom);
+        message.setUserTo(userTo);
+        message.setContent(text);
+        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
+
+        return message;
+    }
 }

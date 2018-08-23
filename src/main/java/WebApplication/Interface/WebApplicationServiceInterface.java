@@ -58,4 +58,16 @@ public interface WebApplicationServiceInterface {
     UpdateEducationResponse UpdateEducation(UpdateEducationRequest request);
 
     UpdateSkillResponse UpdateSkill(UpdateSkillRequest request);
+
+    SendMessageResponse SendMessage(SendMessageRequest request);
+
+    GetMessagesResponse GetMessages(GetMessagesRequest request);
+
+    GetNotificationsResponse GetNotifications(GetNotificationsRequest request);
+
+    GetConversationsResponse GetConversations(GetConversationsRequest request);
+
+    UpdateEmailResponse UpdateEmail(UpdateEmailRequest request);
+
+    UpdatePasswordResponse UpdatePassword(UpdatePasswordRequest request);
 }

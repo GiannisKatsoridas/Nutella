@@ -20,6 +20,10 @@ import java.util.Objects;
     @NamedQuery(
             name = "UsersEntity.search",
             query = "SELECT u FROM UsersEntity u WHERE u.firstName LIKE :search OR u.lastName LIKE :search"
+    ),
+    @NamedQuery(
+            name = "UsersEntity.getConversations",
+            query = "SELECT DISTINCT u FROM UsersEntity u JOIN MessagesEntity m WHERE (u.id = m.userTo AND m.userFrom = :userId) OR (u.id = m.userFrom AND m.userTo = :userId) ORDER BY m.timestamp DESC"
     )
 })
 @Table(name = "users", schema = "nutella")
