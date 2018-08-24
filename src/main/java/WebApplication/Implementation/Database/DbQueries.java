@@ -193,18 +193,13 @@ public class DbQueries {
 
     public long InsertJob(EntityManager em, JobsEntity job){
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
         long jobId;
 
         try{
             em.persist(job);
-            tx.commit();
             jobId = job.getId();
         }
         catch(PersistenceException e){
-            tx.rollback();
             jobId = -1;
         }
 
@@ -892,5 +887,21 @@ public class DbQueries {
         em.close();
 
         return id;
+    }
+
+
+    public boolean InsertJobRequirement(EntityManager em, JobrequirementsEntity jr){
+
+        boolean result;
+
+        try{
+            em.persist(jr);
+            result = true;
+        }
+        catch (PersistenceException e){
+            result = false;
+        }
+
+        return result;
     }
 }

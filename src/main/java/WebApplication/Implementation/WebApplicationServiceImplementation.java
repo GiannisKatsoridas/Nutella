@@ -109,11 +109,31 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         JobsEntity job = DbQueriesHelper.CreateJob(new JobsEntity(), request);
 
         EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
         long jobId = DbQueriesHelper.GetLastJobId(em);
         job.setId(jobId);
 
         jobId = db.InsertJob(em, job);
+
+        if(jobId == -1){
+            tx.rollback();
+        }
+        else {
+            boolean result = true;
+            for (String j : request.getSkills()){
+                JobrequirementsEntity jr = DbQueriesHelper.CreateJobRequirement(new JobrequirementsEntity(), j, jobId);
+                result = db.InsertJobRequirement(em, jr);
+                if(!result){
+                    tx.rollback();
+                    break;
+                }
+            }
+            if(result){
+                tx.commit();
+            }
+        }
 
         em.close();
 

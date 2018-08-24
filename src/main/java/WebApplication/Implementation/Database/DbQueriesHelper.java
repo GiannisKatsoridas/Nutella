@@ -97,6 +97,7 @@ public class DbQueriesHelper {
 
         like.setPostId(request.getPostId());
         like.setUserId(request.getUserId());
+        like.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
         return like;
     }
@@ -287,5 +288,13 @@ public class DbQueriesHelper {
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
         return message;
+    }
+
+    public static JobrequirementsEntity CreateJobRequirement(JobrequirementsEntity jr, String skill, long jobId){
+
+        jr.setSkill(skill);
+        jr.setJobId(jobId);
+
+        return jr;
     }
 }

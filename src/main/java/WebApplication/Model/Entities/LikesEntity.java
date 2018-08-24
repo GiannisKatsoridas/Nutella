@@ -1,6 +1,7 @@
 package WebApplication.Model.Entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +20,17 @@ import java.util.Objects;
 public class LikesEntity {
     private long userId;
     private long postId;
+    private java.sql.Timestamp timestamp;
+
+    @Basic
+    @Column(name = "Timestamp")
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 
     @Id
     @Column(name = "UserID")
