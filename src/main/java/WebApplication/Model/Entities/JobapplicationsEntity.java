@@ -5,6 +5,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "jobapplications", schema = "nutella", catalog = "")
+@NamedQueries({
+        @NamedQuery(
+                name = "JobapplicationsEntity.GetJobsByUser",
+                query = "select j from JobapplicationsEntity j where j.applicant = :userId"
+        ),
+        @NamedQuery(
+                name = "JobapplicationsEntity.GetAllJobApplications",
+                query = "select j from JobapplicationsEntity j"
+        )
+})
 @IdClass(JobapplicationsEntityPK.class)
 public class JobapplicationsEntity {
     private long applicant;

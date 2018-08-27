@@ -4,12 +4,17 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     
+    <listener>
+        <listener-class>ContextListener</listener-class>
+    </listener>
+    
     <servlet>
         <description>Apache CXF Endpoint</description>
         <servlet-name>cxf</servlet-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>

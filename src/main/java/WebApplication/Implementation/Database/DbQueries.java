@@ -1,5 +1,6 @@
 package WebApplication.Implementation.Database;
 
+import WebApplication.Model.Helpers.JobSkillsAlike;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -7,10 +8,7 @@ import WebApplication.Model.Entities.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.System.in;
 
@@ -318,18 +316,60 @@ public class DbQueries {
     }
 
 
-    public List<JobsEntity> GetJobsForUser(long userId){
+    public List<JobsEntity> GetJobsFromFriends(long userId){
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
-        List<JobsEntity> results1 = em.createNamedQuery("JobsEntity.getJobsFrom1").setParameter("userId", userId).getResultList();
-        List<JobsEntity> results2 = em.createNamedQuery("JobsEntity.getJobsFrom2").setParameter("userId", userId).getResultList();
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, -3);
+
+
+        List<JobsEntity> results1 = em.createNamedQuery("JobsEntity.getJobsFrom1").setParameter("userId", userId).setParameter("date", cal.getTime()).getResultList();
+        List<JobsEntity> results2 = em.createNamedQuery("JobsEntity.getJobsFrom2").setParameter("userId", userId).setParameter("date", cal.getTime()).getResultList();
 
         results1.addAll(results2);
 
         em.close();
 
         return results1;
+    }
+
+
+    public List<JobsEntity> GetJobsAlike(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<SkillsEntity> skills = em.createNamedQuery("SkillsEntity.GetSkills").setParameter("userId", userId).getResultList();
+        List<JobsEntity> jobs = em.createNamedQuery("JobsEntity.selectAllJobs").getResultList();
+
+        List<JobSkillsAlike> jobsAndSkills = DbQueriesHelper.GetCommonJobSkills(new ArrayList<JobSkillsAlike>(), skills, jobs, em);
+
+        Comparator comp = new Comparator<JobSkillsAlike>() {
+            public int compare(JobSkillsAlike o, JobSkillsAlike t1) {
+                return t1.getSkillsAlike() - o.getSkillsAlike();
+            }
+        };
+
+        Collections.sort(jobsAndSkills, comp);
+
+        long[] ids = new long[5];
+
+        for(int i=4; i>=0; i--){
+
+            if(jobsAndSkills.size() < i){
+                ids[i] = 0;
+            }
+            else{
+                ids[i] = jobsAndSkills.get(i).getJobId();
+            }
+
+        }
+
+        List<JobsEntity> result = em.createNamedQuery("JobsEntity.getFiveSpecificJobs").setParameter("id1", ids[0]).setParameter("id2", ids[1]).setParameter("id3", ids[2]).setParameter("id4", ids[3]).setParameter("id5", ids[4]).getResultList();
+
+        return result;
     }
 
 

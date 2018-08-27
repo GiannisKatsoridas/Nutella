@@ -9,17 +9,28 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class GetJobsResponse {
 
-    private List<JobsEntity> results;
+    private List<JobsEntity> fromFriends;
 
-    public List<JobsEntity> getResults() {
-        return results;
+    public GetJobsResponse(List<JobsEntity> fromFriends, List<JobsEntity> alike) {
+        this.fromFriends = fromFriends;
+        this.alike = alike;
     }
 
-    public void setResults(List<JobsEntity> results) {
-        this.results = results;
+    public List<JobsEntity> getAlike() {
+        return alike;
     }
 
-    public GetJobsResponse(List<JobsEntity> results) {
-        this.results = results;
+    public void setAlike(List<JobsEntity> alike) {
+        this.alike = alike;
+    }
+
+    private List<JobsEntity> alike;
+
+    public List<JobsEntity> getFromFriends() {
+        return fromFriends;
+    }
+
+    public void setFromFriends(List<JobsEntity> fromFriends) {
+        this.fromFriends = fromFriends;
     }
 }

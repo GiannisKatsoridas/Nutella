@@ -1,6 +1,7 @@
 package WebApplication.Controller;
 
 
+import WebApplication.Implementation.Optimizations.KNN;
 import WebApplication.Implementation.WebApplicationServiceImplementation;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -300,4 +301,5 @@ public class WebApplicationController {
         return service.UpdatePassword(request);
 
     }
+
 }

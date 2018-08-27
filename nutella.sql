@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2018 at 03:40 PM
+-- Generation Time: Aug 27, 2018 at 05:16 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -59,6 +59,14 @@ CREATE TABLE `education` (
   `YearTo` year(4) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `education`
+--
+
+INSERT INTO `education` (`UserID`, `EducationID`, `Degree`, `Institution`, `YearFrom`, `YearTo`) VALUES
+(1000000001, 6000000001, 'Bachelor', 'DI', 2014, 2019),
+(1000000001, 6000000002, 'Minor', 'Deree', 2014, 2017);
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +81,15 @@ CREATE TABLE `experience` (
   `DateFrom` date NOT NULL,
   `DateTo` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `experience`
+--
+
+INSERT INTO `experience` (`UserID`, `ExperienceID`, `CompanyTitle`, `Position`, `DateFrom`, `DateTo`) VALUES
+(1000000002, 5000000001, 'Apple', 'Intern', '2017-01-23', '2018-01-23'),
+(1000000002, 5000000002, 'Apple', 'Junior Developer', '2018-01-23', '2018-08-22'),
+(1000000001, 5000000003, 'National Bank Of Greece', 'Intern', '2018-07-02', '2018-09-29');
 
 -- --------------------------------------------------------
 
@@ -90,9 +107,6 @@ CREATE TABLE `friendrequest` (
 --
 
 INSERT INTO `friendrequest` (`Sender`, `Receiver`) VALUES
-(1000000007, 1000000001),
-(1000000007, 1000000002),
-(1000000007, 1000000003),
 (1000000007, 1000000004);
 
 -- --------------------------------------------------------
@@ -112,10 +126,12 @@ CREATE TABLE `friends` (
 
 INSERT INTO `friends` (`User1`, `User2`) VALUES
 (1000000002, 1000000006),
+(1000000003, 1000000001),
 (1000000004, 1000000006),
 (1000000006, 1000000001),
 (1000000006, 1000000003),
-(1000000006, 1000000005);
+(1000000006, 1000000005),
+(1000000007, 1000000001);
 
 -- --------------------------------------------------------
 
@@ -133,10 +149,32 @@ CREATE TABLE `jobapplications` (
 --
 
 INSERT INTO `jobapplications` (`Applicant`, `Job`) VALUES
-(1000000003, 3000000003),
-(1000000007, 3000000001),
-(1000000007, 3000000002),
-(1000000007, 3000000003);
+(1000000002, 3000000002),
+(1000000004, 3000000001),
+(1000000006, 3000000001),
+(1000000006, 3000000002);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobrequirements`
+--
+
+CREATE TABLE `jobrequirements` (
+  `JobID` bigint(10) NOT NULL,
+  `Skill` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `jobrequirements`
+--
+
+INSERT INTO `jobrequirements` (`JobID`, `Skill`) VALUES
+(3000000001, 'Cooking'),
+(3000000001, 'English'),
+(3000000001, 'Good-looking'),
+(3000000002, 'English'),
+(3000000002, 'Java');
 
 -- --------------------------------------------------------
 
@@ -148,17 +186,17 @@ CREATE TABLE `jobs` (
   `ID` bigint(10) NOT NULL,
   `Creator` bigint(10) NOT NULL,
   `Title` varchar(30) NOT NULL,
-  `Description` varchar(200) NOT NULL
+  `Description` varchar(200) NOT NULL,
+  `Date` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `jobs`
 --
 
-INSERT INTO `jobs` (`ID`, `Creator`, `Title`, `Description`) VALUES
-(3000000001, 1000000001, 'Junior Developer', 'Become a junior JAVA Developer at DIT!'),
-(3000000002, 1000000005, 'Senior Developer', 'Become a senior PHP Developer at Oracle!'),
-(3000000003, 1000000006, 'FrontEnd Developer', 'Become a part time front end developer at Wings!');
+INSERT INTO `jobs` (`ID`, `Creator`, `Title`, `Description`, `Date`) VALUES
+(3000000002, 1000000001, 'Java Junior Developer', 'Become a Junior Java Developer at Oracle!', '2018-08-24'),
+(3000000001, 1000000004, 'Chef', 'Become a chef at the best restaurant of Europe!', '2018-08-24');
 
 -- --------------------------------------------------------
 
@@ -168,19 +206,21 @@ INSERT INTO `jobs` (`ID`, `Creator`, `Title`, `Description`) VALUES
 
 CREATE TABLE `likes` (
   `UserID` bigint(10) NOT NULL,
-  `PostID` bigint(10) NOT NULL
+  `PostID` bigint(10) NOT NULL,
+  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `likes`
 --
 
-INSERT INTO `likes` (`UserID`, `PostID`) VALUES
-(1000000001, 2000000001),
-(1000000001, 2000000002),
-(1000000002, 2000000002),
-(1000000006, 2000000002),
-(1000000007, 2000000001);
+INSERT INTO `likes` (`UserID`, `PostID`, `Timestamp`) VALUES
+(1000000001, 2000000001, '2018-08-24 05:42:31'),
+(1000000002, 2000000002, '2018-08-24 05:42:31'),
+(1000000006, 2000000002, '2018-08-24 05:42:31'),
+(1000000001, 2000000002, '2018-08-24 05:42:31'),
+(1000000007, 2000000001, '2018-08-24 05:42:31'),
+(1000000005, 2000000001, '2018-08-24 05:46:20');
 
 -- --------------------------------------------------------
 
@@ -216,6 +256,17 @@ CREATE TABLE `messages` (
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`UserFrom`, `UserTo`, `Content`, `Timestamp`) VALUES
+(1000000006, 1000000004, 'Hey!', '2018-08-22 13:49:39'),
+(1000000006, 1000000004, 'How are ya?', '2018-08-22 13:49:50'),
+(1000000004, 1000000006, 'Leave me alone!', '2018-08-22 13:50:08'),
+(1000000001, 1000000007, 'Why did you add me?', '2018-08-22 14:49:58'),
+(1000000001, 1000000002, 'You should become an admin like me!', '2018-08-22 14:50:13');
+
 -- --------------------------------------------------------
 
 --
@@ -239,7 +290,11 @@ INSERT INTO `notifications` (`ID`, `Timestamp`, `Category`, `UserFrom`, `UserTo`
 (4000000001, '2018-08-21 13:09:45', 1, 1000000007, 1000000004, 2000000001),
 (4000000002, '2018-08-21 13:19:11', 2, 1000000007, 1000000004, 2000000001),
 (4000000003, '2018-08-21 13:29:22', 3, 1000000007, 1000000001, 0),
-(4000000004, '2018-08-21 13:38:45', 1, 1000000001, 1000000004, 2000000002);
+(4000000004, '2018-08-21 13:38:45', 1, 1000000001, 1000000004, 2000000002),
+(4000000005, '2018-08-22 10:11:27', 3, 1000000003, 1000000001, 0),
+(4000000006, '2018-08-22 10:46:37', 4, 1000000003, 1000000001, 0),
+(4000000007, '2018-08-22 10:47:23', 4, 1000000007, 1000000001, 0),
+(4000000008, '2018-08-24 05:46:22', 1, 1000000005, 1000000004, 2000000001);
 
 -- --------------------------------------------------------
 
@@ -298,6 +353,19 @@ CREATE TABLE `skills` (
   `Skill` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `skills`
+--
+
+INSERT INTO `skills` (`UserID`, `SkillID`, `Skill`) VALUES
+(1000000001, 7000000001, 'JAVA'),
+(1000000001, 7000000002, 'Skiing'),
+(1000000001, 7000000003, 'Basketball'),
+(1000000001, 7000000004, 'Dunking'),
+(1000000001, 7000000005, 'English'),
+(1000000001, 7000000006, 'Java'),
+(1000000002, 7000000007, 'Cooking');
+
 -- --------------------------------------------------------
 
 --
@@ -320,7 +388,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Phone`, `IsAdmin`) VALUES
 (1000000001, 'Ioannis', 'Katsoridas', 'i.katsoridas@gmail.com', 'myp@ss', '6948114717', 1),
-(1000000003, 'Little', 'George', 'littlegeorge@gmail.com', 'l1ttlegeorge', '6945632148', 0),
+(1000000003, 'Little', 'George', 'littlegeorge25@gmail.com', 'l1ttlegeorge25', '6945632148', 0),
 (1000000002, 'Leonidas', 'Papanastasiou', 'leopap25@gmail.com', 'mySecondPass', 'DontRemember', 0),
 (1000000004, 'First', 'Tester', 'tester@gmail.com', 'testerpass', '6944444444', 0),
 (1000000005, 'Evita', 'Mintza', 'evita@gmail.com', 'evitaPass', '6955555555', 0),
@@ -366,6 +434,12 @@ ALTER TABLE `friends`
 --
 ALTER TABLE `jobapplications`
   ADD PRIMARY KEY (`Applicant`,`Job`);
+
+--
+-- Indexes for table `jobrequirements`
+--
+ALTER TABLE `jobrequirements`
+  ADD PRIMARY KEY (`JobID`,`Skill`);
 
 --
 -- Indexes for table `jobs`

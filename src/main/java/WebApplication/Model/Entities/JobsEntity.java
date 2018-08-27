@@ -1,6 +1,7 @@
 package WebApplication.Model.Entities;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -8,11 +9,11 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "JobsEntity.getJobsFrom1",
-                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user1 join JobsEntity j on j.creator = f.user2 where f.user1 = :userId"
+                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user1 join JobsEntity j on j.creator = f.user2 where f.user1 = :userId and j.date > :date"
         ),
         @NamedQuery(
                 name = "JobsEntity.getJobsFrom2",
-                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user2 join JobsEntity j on j.creator = f.user1 where f.user2 = :userId"
+                query = "select j from UsersEntity u join FriendsEntity f on u.id = f.user2 join JobsEntity j on j.creator = f.user1 where f.user2 = :userId and j.date > :date"
         ),
         @NamedQuery(
                 name = "JobsEntity.getJobApplicants",
@@ -21,6 +22,18 @@ import java.util.Objects;
         @NamedQuery(
                 name = "JobsEntity.getJobByUser",
                 query = "select j from JobsEntity j where j.creator = :userId"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.selectAllJobs",
+                query = "select j from JobsEntity j"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.getJobsCount",
+                query = "select count(j.id) from JobsEntity j"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.getFiveSpecificJobs",
+                query = "select j from JobsEntity j where j.id = :id1 or j.id = :id2 or j.id = :id3  or j.id = :id4 or j.id = :id5"
         )
 })
 public class JobsEntity {
@@ -28,6 +41,17 @@ public class JobsEntity {
     private long creator;
     private String title;
     private String description;
+    private Date date;
+
+    @Id
+    @Column(name = "Date")
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Id
     @Column(name = "ID")

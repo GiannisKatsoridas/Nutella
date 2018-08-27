@@ -1,6 +1,7 @@
 package WebApplication.Implementation.Database;
 
 import WebApplication.Model.Entities.*;
+import WebApplication.Model.Helpers.JobSkillsAlike;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.RegisterResponse;
 
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -81,6 +84,7 @@ public class DbQueriesHelper {
         job.setCreator(request.getUserId());
         job.setDescription(request.getJobDescription());
         job.setTitle(request.getJobTitle());
+        job.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
 
         return job;
     }
@@ -296,5 +300,29 @@ public class DbQueriesHelper {
         jr.setJobId(jobId);
 
         return jr;
+    }
+
+    public static ArrayList<JobSkillsAlike> GetCommonJobSkills(ArrayList<JobSkillsAlike> jobSkillsAlike, List<SkillsEntity> skills, List<JobsEntity> jobs, EntityManager em){
+
+        int common = 0;
+
+        for(JobsEntity j: jobs){
+
+            List<String> jobSkills = em.createNamedQuery("JobrequirementsEntity.GetRequirementsByJob").setParameter("jobId", j.getId()).getResultList();
+
+            for(String s: jobSkills){
+
+                if(skills.contains(s)){
+                    common++;
+                }
+
+            }
+
+            jobSkillsAlike.add(new JobSkillsAlike(j.getId(), common));
+            common = 0;
+
+        }
+
+        return jobSkillsAlike;
     }
 }

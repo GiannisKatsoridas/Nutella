@@ -12,7 +12,6 @@ import WebApplication.Model.Responses.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -203,9 +202,10 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
     public GetJobsResponse GetJobs(GetJobsRequest request) {
 
-        List<JobsEntity> results = db.GetJobsForUser(request.getUserId());
+        List<JobsEntity> friends = db.GetJobsFromFriends(request.getUserId());
+        List<JobsEntity> alike = db.GetJobsAlike(request.getUserId());
 
-        return new GetJobsResponse(results);
+        return new GetJobsResponse(friends, alike);
     }
 
     public JobApplicationResponse JobApplication(JobApplicationRequest request) {

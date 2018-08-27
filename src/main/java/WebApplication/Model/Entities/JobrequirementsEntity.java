@@ -6,6 +6,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "jobrequirements", schema = "nutella", catalog = "")
+@NamedQuery(
+        name = "JobrequirementsEntity.GetRequirementsByJob",
+        query = "select j.skill from JobrequirementsEntity j where j.jobId = :jobId"
+)
 @IdClass(JobrequirementsEntityPK.class)
 public class JobrequirementsEntity {
 

@@ -18,6 +18,10 @@ import java.util.Objects;
             query = "SELECT u FROM UsersEntity u"
     ),
     @NamedQuery(
+            name = "UsersEntity.getAllUsersId",
+            query = "SELECT u.id FROM UsersEntity u"
+    ),
+    @NamedQuery(
             name = "UsersEntity.search",
             query = "SELECT u FROM UsersEntity u WHERE u.firstName LIKE :search OR u.lastName LIKE :search"
     ),
