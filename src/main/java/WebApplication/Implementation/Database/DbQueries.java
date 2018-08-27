@@ -1,5 +1,6 @@
 package WebApplication.Implementation.Database;
 
+import WebApplication.Implementation.Optimizations.KNN;
 import WebApplication.Model.Helpers.JobSkillsAlike;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
@@ -320,14 +321,15 @@ public class DbQueries {
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
-        Date date = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
+        cal.setTime(new Date());
         cal.add(Calendar.MONTH, -3);
 
+        java.sql.Date d = new java.sql.Date(cal.getTimeInMillis());
 
-        List<JobsEntity> results1 = em.createNamedQuery("JobsEntity.getJobsFrom1").setParameter("userId", userId).setParameter("date", cal.getTime()).getResultList();
-        List<JobsEntity> results2 = em.createNamedQuery("JobsEntity.getJobsFrom2").setParameter("userId", userId).setParameter("date", cal.getTime()).getResultList();
+
+        List<JobsEntity> results1 = em.createNamedQuery("JobsEntity.getJobsFrom1").setParameter("userId", userId).setParameter("date", d, TemporalType.DATE).getResultList();
+        List<JobsEntity> results2 = em.createNamedQuery("JobsEntity.getJobsFrom2").setParameter("userId", userId).setParameter("date", d, TemporalType.DATE).getResultList();
 
         results1.addAll(results2);
 
@@ -358,7 +360,7 @@ public class DbQueries {
 
         for(int i=4; i>=0; i--){
 
-            if(jobsAndSkills.size() < i){
+            if(jobsAndSkills.size() <= i){
                 ids[i] = 0;
             }
             else{
@@ -370,6 +372,29 @@ public class DbQueries {
         List<JobsEntity> result = em.createNamedQuery("JobsEntity.getFiveSpecificJobs").setParameter("id1", ids[0]).setParameter("id2", ids[1]).setParameter("id3", ids[2]).setParameter("id4", ids[3]).setParameter("id5", ids[4]).getResultList();
 
         return result;
+    }
+
+
+    public List<JobsEntity> GetJobsFromClosestNeighbors(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        ArrayList<Long> closestNeighbors = KNN.findKNearestNeighbors(userId);
+        ArrayList<JobsEntity> jobs = new ArrayList<JobsEntity>();
+
+        for(Long l: closestNeighbors){
+
+            List<JobsEntity> differentJobs = em.createNamedQuery("JobsEntity.getDifferentJobsFromNeighbors").setParameter("userId", userId).setParameter("neighborId", l).getResultList();
+            for(JobsEntity j: differentJobs){
+                if(!jobs.contains(j))
+                    jobs.add(j);
+            }
+
+        }
+
+        em.close();
+
+        return jobs;
     }
 
 

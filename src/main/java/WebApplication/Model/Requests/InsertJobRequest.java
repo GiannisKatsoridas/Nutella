@@ -11,6 +11,7 @@ public class InsertJobRequest {
     private long userId;
     private String jobTitle;
     private String jobDescription;
+    private List<String> skills;
 
     public List<String> getSkills() {
         return skills;
@@ -19,8 +20,6 @@ public class InsertJobRequest {
     public void setSkills(List<String> skills) {
         this.skills = skills;
     }
-
-    private List<String> skills;
 
     public long getUserId() {
         return userId;

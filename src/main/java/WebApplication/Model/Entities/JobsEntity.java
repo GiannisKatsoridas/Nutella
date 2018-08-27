@@ -34,6 +34,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "JobsEntity.getFiveSpecificJobs",
                 query = "select j from JobsEntity j where j.id = :id1 or j.id = :id2 or j.id = :id3  or j.id = :id4 or j.id = :id5"
+        ),
+        @NamedQuery(
+                name = "JobsEntity.getDifferentJobsFromNeighbors",
+                query = "select j from JobapplicationsEntity ja join JobsEntity j on j.id = ja.job where ja.applicant = :neighborId and ja.job not in (select j.job from JobapplicationsEntity j where j.applicant = :userId)"
         )
 })
 public class JobsEntity {

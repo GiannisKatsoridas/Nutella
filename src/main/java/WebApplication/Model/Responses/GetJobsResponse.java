@@ -10,10 +10,21 @@ import java.util.List;
 public class GetJobsResponse {
 
     private List<JobsEntity> fromFriends;
+    private List<JobsEntity> alike;
+    private List<JobsEntity> fromNeighbors;
 
-    public GetJobsResponse(List<JobsEntity> fromFriends, List<JobsEntity> alike) {
+    public List<JobsEntity> getFromNeighbors() {
+        return fromNeighbors;
+    }
+
+    public void setFromNeighbors(List<JobsEntity> fromNeighbors) {
+        this.fromNeighbors = fromNeighbors;
+    }
+
+    public GetJobsResponse(List<JobsEntity> fromFriends, List<JobsEntity> alike, List<JobsEntity> fromNeighbors) {
         this.fromFriends = fromFriends;
         this.alike = alike;
+        this.fromNeighbors = fromNeighbors;
     }
 
     public List<JobsEntity> getAlike() {
@@ -24,7 +35,6 @@ public class GetJobsResponse {
         this.alike = alike;
     }
 
-    private List<JobsEntity> alike;
 
     public List<JobsEntity> getFromFriends() {
         return fromFriends;

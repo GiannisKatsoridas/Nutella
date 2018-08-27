@@ -312,8 +312,11 @@ public class DbQueriesHelper {
 
             for(String s: jobSkills){
 
-                if(skills.contains(s)){
-                    common++;
+                for(SkillsEntity sk: skills){
+                    if(sk.getSkill().equals(s)){
+                        common++;
+                        break;
+                    }
                 }
 
             }

@@ -204,8 +204,33 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         List<JobsEntity> friends = db.GetJobsFromFriends(request.getUserId());
         List<JobsEntity> alike = db.GetJobsAlike(request.getUserId());
+        List<JobsEntity> fromNeighbors = db.GetJobsFromClosestNeighbors(request.getUserId());
 
-        return new GetJobsResponse(friends, alike);
+        ArrayList<JobsEntity> toDelete = new ArrayList<JobsEntity>();
+
+        for(JobsEntity j: alike){
+            if(friends.contains(j) || j.getId() == request.getUserId()){
+                toDelete.add(j);
+            }
+        }
+
+        for(JobsEntity j: toDelete){
+            alike.remove(j);
+        }
+
+        toDelete = new ArrayList<JobsEntity>();
+
+        for(JobsEntity j: fromNeighbors){
+            if(friends.contains(j) || alike.contains(j) || j.getId() == request.getUserId()){
+                toDelete.add(j);
+            }
+        }
+
+        for(JobsEntity j: toDelete){
+            fromNeighbors.remove(j);
+        }
+
+        return new GetJobsResponse(friends, alike, fromNeighbors);
     }
 
     public JobApplicationResponse JobApplication(JobApplicationRequest request) {
