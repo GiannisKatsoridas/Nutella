@@ -3,9 +3,11 @@ package WebApplication.Implementation;
 import WebApplication.Implementation.Database.DbQueries;
 import WebApplication.Implementation.Database.DbQueriesHelper;
 import WebApplication.Implementation.Database.JPAResource;
+import WebApplication.Implementation.Optimizations.JobsOptimizations;
 import WebApplication.Interface.*;
 import WebApplication.Model.Entities.*;
 import WebApplication.Model.Helpers.Article;
+import WebApplication.Model.Helpers.UserApplications;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -134,6 +136,8 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
             }
         }
 
+        JobsOptimizations.AddJob(jobId);
+
         em.close();
 
         return new InsertJobResponse(jobId);
@@ -238,6 +242,8 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         JobapplicationsEntity ja = DbQueriesHelper.CreateJobApplication(new JobapplicationsEntity(), request.getUserId(), request.getJobId());
 
         boolean success = db.InsertJobApplication(ja);
+
+        JobsOptimizations.JobApplication(request.getUserId(), request.getJobId());
 
         return new JobApplicationResponse(success);
     }

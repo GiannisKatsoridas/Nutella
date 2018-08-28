@@ -1,4 +1,5 @@
 import WebApplication.Implementation.Database.JPAResource;
+import WebApplication.Implementation.Optimizations.JobsOptimizations;
 import WebApplication.Implementation.Optimizations.KNN;
 import WebApplication.Model.Entities.JobapplicationsEntity;
 import WebApplication.Model.Entities.JobsEntity;
@@ -25,7 +26,6 @@ public class ContextListener implements ServletContextListener {
         List<JobsEntity> jobs = em.createNamedQuery("JobsEntity.selectAllJobs").getResultList();
         List<JobapplicationsEntity> applications = em.createNamedQuery("JobapplicationsEntity.GetAllJobApplications").getResultList();
 
-
         Map<Long, Map<Long, Integer>> applicationsMap = new LinkedHashMap<Long, Map<Long, Integer>>(users.size());
 
         for(Long u: users){
@@ -40,11 +40,19 @@ public class ContextListener implements ServletContextListener {
 
         }
 
+        boolean start = true;
+        int it = 0;
+
         for(Long u: users){
 
             ArrayList<Integer> list = new ArrayList<Integer>();
 
             for(JobsEntity j: jobs){
+
+                if(start){                              // Creation of the map mapsPositions that shows for every job their position in the UsersApplication.values ArrayList
+                    UserApplications.mapsPositions.put(j.getId(), it);
+                    it++;
+                }
 
                 if(applicationsMap.get(u).containsKey(j.getId())) {
                     list.add(1);
@@ -54,23 +62,13 @@ public class ContextListener implements ServletContextListener {
                 }
 
             }
+            start = false;
 
             UserApplications.values.put(u, list);
         }
 
 
-
-        for(Long u: users){
-
-            List<Integer> list = UserApplications.values.get(u);
-
-            for(Integer i: list){
-
-                System.out.print(i + " ");
-
-            }
-            System.out.println();
-        }
+        UserApplications.PrintUsersApplicationValues();
 
         for (Long u: users){
 
