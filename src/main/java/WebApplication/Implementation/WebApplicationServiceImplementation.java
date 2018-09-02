@@ -4,10 +4,10 @@ import WebApplication.Implementation.Database.DbQueries;
 import WebApplication.Implementation.Database.DbQueriesHelper;
 import WebApplication.Implementation.Database.JPAResource;
 import WebApplication.Implementation.Optimizations.JobsOptimizations;
+import WebApplication.Implementation.Optimizations.PostsOptimizations;
 import WebApplication.Interface.*;
 import WebApplication.Model.Entities.*;
 import WebApplication.Model.Helpers.Article;
-import WebApplication.Model.Helpers.UserApplications;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -94,6 +94,8 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
             tx.rollback();
         }
 
+        PostsOptimizations.AddPost(postId);
+
         return new InsertPostResponse(postId);
     }
 
@@ -157,6 +159,8 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
             id = -1;
         }
 
+        PostsOptimizations.PostReact(request.getUserId(), request.getPostId());
+
         return new LikeResponse(id);
     }
 
@@ -174,23 +178,32 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
             id = -1;
         }
 
+        PostsOptimizations.PostReact(request.getUserId(), request.getPostId());
+
         return new CommentResponse(id);
     }
 
     public GetPostsResponse GetPosts(GetPostsRequest request) {
 
-        List<PostsEntity> posts = db.GetPosts(request.getUserId());
+        List<PostsEntity> postsFromFriends = db.GetPostsFromFriends(request.getUserId());
+        List<PostsEntity> postsFromNeighbors = db.GetPostsFromNeighbors(request.getUserId());
+
+        for(PostsEntity n: postsFromNeighbors){
+            if(!postsFromFriends.contains(n)){
+                postsFromFriends.add(n);
+            }
+        }
 
         List<Article> articles = new ArrayList<Article>();
 
         List<LikesEntity> likes;
         List<CommentsEntity> comments;
 
-        for(int i=0; i<posts.size(); i++){
+        for(int i=0; i<postsFromFriends.size(); i++){
 
-            likes = db.GetLikes(posts.get(i).getId());
-            comments = db.GetComments(posts.get(i).getId());
-            articles.add(new Article(posts.get(i).getText(), likes, comments));
+            likes = db.GetLikes(postsFromFriends.get(i).getId());
+            comments = db.GetComments(postsFromFriends.get(i).getId());
+            articles.add(new Article(postsFromFriends.get(i).getText(), likes, comments));
 
         }
 

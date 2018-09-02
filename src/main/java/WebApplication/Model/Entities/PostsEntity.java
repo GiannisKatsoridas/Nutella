@@ -14,6 +14,18 @@ import java.util.Objects;
         @NamedQuery(
                 name = "PostsEntity.GetPostsFromFriend2",
                 query = "select p from UsersEntity u join FriendsEntity f on u.id = f.user1 join PostsEntity p on p.userId = f.user2 where f.user1 = :userId"
+        ),
+        @NamedQuery(
+                name = "PostsEntity.GetAllPosts",
+                query = "select p from PostsEntity p"
+        ),
+        @NamedQuery(
+                name = "PostsEntity.getDifferentPostsFromNeighborsLikes",
+                query = "select p from PostsEntity p join LikesEntity l on p.id = l.postId where l.userId = :neighborId and l.timestamp > :timestamp and l.postId not in (select pa.id from PostsEntity pa join LikesEntity la on pa.id = la.postId where la.userId = :userId)"
+        ),
+        @NamedQuery(
+                name = "PostsEntity.getDifferentPostsFromNeighborsComments",
+                query = "select p from PostsEntity p join CommentsEntity c on p.id = c.postId where c.userId = :neighborId and c.timeStamp > :timestamp and c.postId not in (select pa.id from PostsEntity pa join CommentsEntity ca on pa.id = ca.postId where ca.userId = :userId)"
         )
 })
 public class PostsEntity {

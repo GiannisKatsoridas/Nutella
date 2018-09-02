@@ -13,6 +13,9 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (data, status) {
                         alert("Data: " + data.notificationId + " - Status: " + status);
+                    },
+                    error: function(){
+                        alert("An error occured");
                     }
                 });
             });
@@ -27,6 +30,9 @@
                     dataType: "json",
                     success: function(data, status){
                         alert("Data: " + data.userId + " - Status: " + status);
+                    },
+                    error: function(){
+                        alert("An error occured");
                     }
                 });
             });

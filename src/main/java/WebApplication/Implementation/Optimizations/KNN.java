@@ -1,9 +1,9 @@
 package WebApplication.Implementation.Optimizations;
 
+import WebApplication.Model.Helpers.PostsInterest;
 import WebApplication.Model.Helpers.UserApplications;
-import WebApplication.Model.Helpers.UsersDistancesJobs;
+import WebApplication.Model.Helpers.UsersDistances;
 
-import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,21 +34,52 @@ public class KNN {
     }
 
 
-    public static ArrayList<Long> findKNearestNeighbors(long userId){
+    public static ArrayList<Long> findKNearestNeighborsJobs(long userId){
 
         double distance;
-        ArrayList<UsersDistancesJobs> distances = new ArrayList<UsersDistancesJobs>();
+        ArrayList<UsersDistances> distances = new ArrayList<UsersDistances>();
         ArrayList<Long> result = new ArrayList<Long>();
 
         for(Long l: UserApplications.values.keySet()){
             if(l != userId) {
                 distance = CalculateDistance(UserApplications.values.get(l), UserApplications.values.get(userId));
-                distances.add(new UsersDistancesJobs(l, distance));
+                distances.add(new UsersDistances(l, distance));
             }
         }
 
-        Comparator<UsersDistancesJobs> comp = new Comparator<UsersDistancesJobs>() {
-            public int compare(UsersDistancesJobs o1, UsersDistancesJobs o2) {
+        Comparator<UsersDistances> comp = new Comparator<UsersDistances>() {
+            public int compare(UsersDistances o1, UsersDistances o2) {
+                if(o1.getDistance() > o2.getDistance()) return 1;
+                if(o1.getDistance() < o2.getDistance()) return -1;
+                return 0;
+            }
+        };
+
+        Collections.sort(distances, comp);
+
+        for(int i=0; i<5; i++)
+            if(distances.get(i).getDistance()!= 0.0)
+                result.add(distances.get(i).getUserId());
+
+        return result;
+    }
+
+
+    public static ArrayList<Long> findKNearestNeighborsPosts(long userId){
+
+        double distance;
+        ArrayList<UsersDistances> distances = new ArrayList<UsersDistances>();
+        ArrayList<Long> result = new ArrayList<Long>();
+
+        for(Long u: PostsInterest.values.keySet()){
+            if(u != userId) {
+                distance = CalculateDistance(PostsInterest.values.get(u), PostsInterest.values.get(userId));
+                distances.add(new UsersDistances(u, distance));
+            }
+        }
+
+        Comparator<UsersDistances> comp = new Comparator<UsersDistances>() {
+            public int compare(UsersDistances o1, UsersDistances o2) {
                 if(o1.getDistance() > o2.getDistance()) return 1;
                 if(o1.getDistance() < o2.getDistance()) return -1;
                 return 0;

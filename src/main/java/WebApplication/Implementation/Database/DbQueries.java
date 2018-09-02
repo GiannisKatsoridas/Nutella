@@ -254,7 +254,7 @@ public class DbQueries {
     }
 
 
-    public List<PostsEntity> GetPosts(long userId){
+    public List<PostsEntity> GetPostsFromFriends(long userId){
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
@@ -267,6 +267,41 @@ public class DbQueries {
 
         return posts1;
 
+    }
+
+
+    public List<PostsEntity> GetPostsFromNeighbors(long userId){
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        ArrayList<Long> closestNeighbors = KNN.findKNearestNeighborsPosts(userId);
+        ArrayList<PostsEntity> posts = new ArrayList<PostsEntity>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -3);
+
+        java.sql.Timestamp d = new java.sql.Timestamp(cal.getTimeInMillis());
+
+
+        for(Long n: closestNeighbors){
+
+            List<PostsEntity> differentPostsLikes = em.createNamedQuery("PostsEntity.getDifferentPostsFromNeighborsLikes").setParameter("userId", userId).setParameter("neighborId", n).setParameter("timestamp", d).getResultList();
+            List<PostsEntity> differentPostsComments = em.createNamedQuery("PostsEntity.getDifferentPostsFromNeighborsComments").setParameter("userId", userId).setParameter("neighborId", n).setParameter("timestamp", d).getResultList();
+            for(PostsEntity j: differentPostsLikes){
+                if(!posts.contains(j))
+                    posts.add(j);
+            }
+            for(PostsEntity j: differentPostsComments){
+                if(!posts.contains(j))
+                    posts.add(j);
+            }
+
+        }
+
+        em.close();
+
+        return posts;
     }
 
 
@@ -379,7 +414,7 @@ public class DbQueries {
 
         EntityManager em = JPAResource.factory.createEntityManager();
 
-        ArrayList<Long> closestNeighbors = KNN.findKNearestNeighbors(userId);
+        ArrayList<Long> closestNeighbors = KNN.findKNearestNeighborsJobs(userId);
         ArrayList<JobsEntity> jobs = new ArrayList<JobsEntity>();
 
         for(Long l: closestNeighbors){

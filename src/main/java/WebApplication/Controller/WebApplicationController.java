@@ -32,6 +32,8 @@ public class WebApplicationController {
     @Path("user/login/{email}/{password}")
     public LoginResponse Login(@PathParam("email") final String email, @PathParam("password") final String password){
 
+        System.out.println("REQUEST RECEIVED");
+
         LoginRequest request = new LoginRequest(email, password);
 
         return service.Login(request);

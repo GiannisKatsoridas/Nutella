@@ -15,6 +15,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "LikesEntity.getUserLiked",
                 query = "select u from LikesEntity l join PostsEntity p on l.postId = p.id join UsersEntity u on u.id = p.userId where p.id = :postId"
+        ),
+        @NamedQuery(
+                name = "LikesEntity.GetAllLikes",
+                query = "select l from LikesEntity l"
         )
 })
 public class LikesEntity {
