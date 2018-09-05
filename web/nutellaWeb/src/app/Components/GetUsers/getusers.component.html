@@ -1,0 +1,17 @@
+<div style="text-align: center">
+
+    <h2>Get All Users</h2>
+    <h1>
+        Users List:
+    </h1>
+    <ol>
+        <li *ngFor="let user of users;">
+            {{user.firstName + " " + user.lastName}}
+            <button (click)="getUserInfo(user.id)">Get info!</button>
+            {{userInfo[getIndex(user.id)]}}
+        </li>
+    </ol>
+
+    <button (click)="getUsersList()">Get Users!</button>
+
+</div>

@@ -40,6 +40,7 @@ import java.util.Objects;
                 query = "select j from JobapplicationsEntity ja join JobsEntity j on j.id = ja.job where ja.applicant = :neighborId and ja.job not in (select j.job from JobapplicationsEntity j where j.applicant = :userId)"
         )
 })
+@IdClass(JobsEntityPK.class)
 public class JobsEntity {
     private long id;
     private long creator;

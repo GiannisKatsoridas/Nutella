@@ -1,0 +1,15 @@
+<div style="text-align: center">
+
+    <h2>Register Service</h2>
+    <h1>
+        {{ register }}
+    </h1>
+    <input #first type="text" value="First Name">
+    <input #last type="text" value="Last Name">
+    <input #email type="email" value="Email"/>
+    <input #pass type="password" value="Password">
+    <input #passConf type="password" value="Confirm Password">
+    <input #phone type="tel" value="Phone">
+    <input #image type="text" value="Image">
+    <button (click)="postRegister(first.value, last.value, email.value, pass.value, passConf.value, phone.value, image.value)">Register</button>
+</div>
