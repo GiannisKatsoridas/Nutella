@@ -1,26 +1,45 @@
-import { Component } from '@angular/core';
-import {LoginResponse} from "./Response";
-import {HttpClient} from "node_modules/@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {appRoutes} from "../app.module";
+import {LoginRequest} from "../Models/Request";
+import {LoginResponse} from "../Models/Response";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit {
 
-  loginResp: string;
+  loginRequest: LoginRequest;
 
-  constructor(private http:HttpClient) { }
 
-  public sendLoginGet(name: string, pass: string){
+  constructor(private http: HttpClient, private router: Router) { }
 
-    console.log("HEY");
+  ngOnInit() {
 
-    this.http.get<LoginResponse>("http://localhost:8080/api/rest/user/login/" + name + "/" + pass).subscribe((data: LoginResponse) => {
-      console.log(data);
-      this.loginResp = data.userId.toString();
-    })
+  }
+
+  public login(email: string, psw: string){
+
+      this.loginRequest = new class implements LoginRequest {
+          email: string = email;
+          password: string = psw;
+      };
+
+      this.http.get<LoginResponse>("http://localhost:8080/api/rest/user/login/" + this.loginRequest.email + "/" + this.loginRequest.password).subscribe((data: LoginResponse) => {
+
+        console.log(data);
+
+        if(data.isAdmin){
+          this.router.navigate(['messages']);
+        }
+        else{
+          this.router.navigate(['settings']);
+        }
+
+      });
 
   }
 

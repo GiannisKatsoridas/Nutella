@@ -2,6 +2,7 @@ package WebApplication.Model.Responses;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LoginResponse {
@@ -9,8 +10,9 @@ public class LoginResponse {
     ///If userId == 0 then the given credentials do not match any user in the database
     ///If userId == -1 then there was an internal server error
 
-
+    @JsonProperty("userId")
     private long userId;
+    @JsonProperty("isAdmin")
     private boolean isAdmin;
 
     public LoginResponse(long userId, boolean isAdmin) {
@@ -26,7 +28,7 @@ public class LoginResponse {
         this.userId = userId;
     }
 
-    public boolean isAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 

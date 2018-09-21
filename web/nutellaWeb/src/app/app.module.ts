@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { Routes, RouterModule} from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -19,9 +20,22 @@ import { ProfileEditComponent } from './profile/profile-edit/profile-edit.compon
 import { ChangeEmailComponent } from './settings/change-email/change-email.component';
 import { ChangePwdComponent } from './settings/change-pwd/change-pwd.component';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from "@angular/common/http";
+import { ComposeComponent } from './messages/compose/compose.component';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
-
+export const appRoutes: Routes = [
+  { path: '', component: MainComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'jobs', component: JobsComponent },
+  { path: 'connections', component: ConnectionsComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'change_pwd', component: ChangePwdComponent },
+  { path: 'change_email', component: ChangeEmailComponent },
+  { path: 'messages', component: MessagesComponent },
+  { path: 'compose', component: ComposeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+];
 
 @NgModule({
   declarations: [
@@ -42,11 +56,13 @@ import { HttpClientModule } from "@angular/common/http";
     ProfileEditComponent,
     ChangeEmailComponent,
     ChangePwdComponent,
-    LoginComponent
+    LoginComponent,
+    ComposeComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    RouterModule.forRoot(appRoutes),
+      HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

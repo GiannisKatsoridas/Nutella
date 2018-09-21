@@ -1,42 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome to LinkedOut</title>
+	<meta charset="UTF-8">
+	
 </head>
 <body>
+	
+	<form>
+	  <!-- <div class="imgcontainer">
+	    <img src="img_avatar2.png" alt="Avatar" class="avatar">
+	  </div> -->
 
-<h2>Login Form</h2>
+	  <div class="container">
+	    <label><b>Email</b></label>
+	    <input #email type="text" placeholder="Enter Email" name="email" required>
 
-<!--
-<form>
--->
+	    <label><b>Password</b></label>
+	    <input #psw type="password" placeholder="Enter Password" name="psw" required>
 
-  <div class="container">
-<!--
-    <label for="email"><b>Email</b></label>
--->
-    <input #email type="text" placeholder="Enter Email" name="email" required>
+	    <button (click)="login(email.value, psw.value)" type="button">Login</button>
+	  </div>
 
-<!--
-    <label for="psw"><b>Password</b></label>
--->
-    <input #pass type="password" placeholder="Enter Password" name="psw" required>
-
-    <button (click)="sendLoginGet(email.value, pass.value)">Login</button>
-    <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
-  </div>
-
-  <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
-    <span class="psw">Forgot <a href="#">password?</a></span>
-  </div>
-
-{{loginResp}}
-<!--
-</form>
--->
+	  <div class="container" style="background-color:#f1f1f1">
+	    <span class="psw">Not a member ? <a href="/register">Sign up !</a></span>
+	  </div>
+	</form>
 
 </body>
 </html>
