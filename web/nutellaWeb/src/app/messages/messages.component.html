@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <header>
-  <h1>Messages</h1>
+  <h1>Messages {{user}}</h1>
   
 </header>
 <body>
 <div class="mailbox">
+
   <div class="nav">
-    <a href="/compose">compose</a>
-    <a href="#" class="active">messages</a>
+    <a href="/compose">Compose</a>
+    <a class="active">Conversations</a>
+    <a *ngFor="let conversation of conversations.users;">
+      <a (click)="getMessages(conversation.userId)">
+        {{conversation.firstName + " " + conversation.lastName}}
+      </a>
+    </a>
   </div>
+
+
   <div class="messages">
-    
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
+
+    <div *ngFor="let message of messages.messages;">
+      <div class="message">
+        <span class="date">{{message.timestamp}}</span>
+        <span class="title">{{message.content}}</span>
+      </div>
     </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
+
+    <div class="container">
+      <form>
+
+        <label>Message</label>
+        <textarea #text placeholder="Your message here..." style="height:200px"></textarea>
+
+        <br>
+        <br>
+
+        <input (click)="sendMessage(text.value); text.value=''" type="button" value="Send">
+      </form>
     </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
-    </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
-    </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
-    </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
-    </div>
-    
-    <div class="message">
-      <span class="sender">little_george</span>
-      <span class="date">Today</span>
-      <span class="title">Hello friend !</span>
-    </div>
-    
+
   </div>
+
 </div>
 </body>
 </html>

@@ -72,8 +72,13 @@ public class WebApplicationController {
 
         GetConnectionsRequest request = new GetConnectionsRequest(userId);
 
-        return service.GetConnections(request);
+        GetConnectionsResponse resp = service.GetConnections(request);
 
+        if(resp.getUsers() == null){
+            resp = null;
+        }
+
+        return resp;
     }
 
     @POST

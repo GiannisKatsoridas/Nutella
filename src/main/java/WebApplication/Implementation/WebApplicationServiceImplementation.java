@@ -70,7 +70,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         UsersEntity user = db.GetUserById(request.getUserId());
         PicturesEntity picture = db.GetPicture(request.getUserId());
 
-        return new GetInfoResponse(new UserInfo(user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink()));
+        return new GetInfoResponse(new UserInfo(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), picture.getLink()));
     }
 
     public InsertPostResponse InsertPost(InsertPostRequest request){
@@ -311,7 +311,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         for(UsersEntity u: connectionRequests){
 
             image = db.GetPicture(u.getId());
-            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image.getLink()));
+            result.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), image.getLink()));
 
         }
 
@@ -442,7 +442,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         for(UsersEntity u: users){
 
             PicturesEntity picture = db.GetPicture(u.getId());
-            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), picture.getLink()));
+            result.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), picture.getLink()));
         }
 
         return new GetConversationsResponse(result);

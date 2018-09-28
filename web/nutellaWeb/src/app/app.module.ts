@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule} from '@angular/router';
+import { HttpClientModule } from "@angular/common/http";
+import { CookieService } from 'ngx-cookie-service'
 
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -21,7 +23,8 @@ import { ChangeEmailComponent } from './settings/change-email/change-email.compo
 import { ChangePwdComponent } from './settings/change-pwd/change-pwd.component';
 import { LoginComponent } from './login/login.component';
 import { ComposeComponent } from './messages/compose/compose.component';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { NotificationsComponent } from './navbar/notifications/notifications.component';
+import { LogoutComponent } from './logout/logout.component';
 
 export const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -35,7 +38,12 @@ export const appRoutes: Routes = [
   { path: 'compose', component: ComposeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'notifications', component: NotificationsComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'user_management', component: UserManagementComponent },
 ];
+
+export const loggedIn: boolean = false;
 
 @NgModule({
   declarations: [
@@ -57,14 +65,16 @@ export const appRoutes: Routes = [
     ChangeEmailComponent,
     ChangePwdComponent,
     LoginComponent,
-    ComposeComponent
+    ComposeComponent,
+    NotificationsComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-      HttpClientModule
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

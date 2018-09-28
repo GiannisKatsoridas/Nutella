@@ -6,10 +6,10 @@
 <body>
 <form>
   		Old password:<br>
-  		<input type="text" name="email"><br>
+  		<input #old type="password" name="old"><br>
   		New password:<br>
-  		<input type="text" name="email"><br><br>
-  		<input type="submit" value="Submit">
+  		<input #new type="password" name="new"><br><br>
+		<input (click)="updatePassword(old.value, new.value)" type="button" value="Change Password!">
 	</form>
 </body>
 </html>

@@ -1,21 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-</head>
-<body>
-	<form class="search">
-  		<input type="text" placeholder="Search.." name="search">
-  		<button type="submit"><i class="fa fa-search"></i></button>
-	</form>
+<form class="search">
+	<input #search type="text" placeholder="Search.." name="search">
+	<button (click)="getSearchResults(search.value)" type="button"><i class="fa fa-search"></i></button>
+</form>
 
-	<br><br>
+<br><br>
 
-	Connection List 
+<h1> Connection List </h1>
 
-	<br><br>
+<br><br>
 
-	<!-- xristes edw -->
+<ol>
+    <li *ngFor="let connection of connections.users;">
+        {{connection.firstName + " " + connection.lastName}}
+    </li>
+</ol>
 
-</body>
-</html>
+<h2>    Search Results:    </h2>
+
+<h3> {{ errorMessage }} </h3>
+
+<ol>
+    <li *ngFor="let result of getSearchResultsArray.results;">
+        {{result.firstName + " " + result.lastName}}
+        <button (click)="getUserProfile(result.userId)">Show Profile!</button>
+    </li>
+</ol>

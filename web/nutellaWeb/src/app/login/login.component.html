@@ -19,6 +19,8 @@
 	    <label><b>Password</b></label>
 	    <input #psw type="password" placeholder="Enter Password" name="psw" required>
 
+		  <h2> {{ errorMessage }}</h2>
+
 	    <button (click)="login(email.value, psw.value)" type="button">Login</button>
 	  </div>
 

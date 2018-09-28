@@ -14,6 +14,7 @@ import java.util.Objects;
 })
 @IdClass(MessagesEntityPK.class)
 public class MessagesEntity {
+
     private long userFrom;
     private long userTo;
     private String content;

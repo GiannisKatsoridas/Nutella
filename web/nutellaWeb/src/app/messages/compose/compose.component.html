@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<header>
+  <h1>Compose Message</h1>
+  
+</header>
+<body>
+	<div class="container">
+  		<form>
+		    <label>Send To:</label>
+		    <input #name type="text" placeholder="Full Name">
+
+		    <label>Message</label>
+		    <textarea #content placeholder="Your message here..." style="height:200px"></textarea>
+
+			<h4>{{errorMessage}}</h4>
+
+		    <input (click)="verifyReceiver(name.value, content.value)" type="button" value="Send">
+	  </form>
+	</div>
+
+</body>
+</html>

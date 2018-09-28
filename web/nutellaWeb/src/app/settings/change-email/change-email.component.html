@@ -5,11 +5,11 @@
 </head>
 <body>
 	<form>
-  		Old email:<br>
-  		<input type="text" name="email"><br>
-  		New email:<br>
-  		<input type="text" name="email"><br><br>
-  		<input type="submit" value="Submit">
+  		New Email:<br>
+  		<input #email type="text" name="email"><br>
+  		Password:<br>
+  		<input #password type="password" name="pass"><br><br>
+  		<input (click)="updateEmail(email.value, password.value)" type="button" value="Change Email!">
 	</form>
 </body>
 </html>

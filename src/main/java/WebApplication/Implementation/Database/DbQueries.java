@@ -181,7 +181,7 @@ public class DbQueries {
         for(UsersEntity u: connections1){
 
             String image = GetPicture(u.getId()).getLink();
-            userInfo.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
+            userInfo.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), image));
 
         }
 
@@ -344,7 +344,7 @@ public class DbQueries {
         for(UsersEntity u: results){
 
             String image = GetPicture(u.getId()).getLink();
-            userInfo.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
+            userInfo.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), image));
 
         }
 
@@ -468,7 +468,7 @@ public class DbQueries {
         for(UsersEntity u: users){
 
             String image = GetPicture(u.getId()).getLink();
-            result.add(new UserInfo(u.getFirstName(), u.getLastName(), u.getEmail(), image));
+            result.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), image));
         }
 
         em.close();

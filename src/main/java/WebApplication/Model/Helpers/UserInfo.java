@@ -2,10 +2,19 @@ package WebApplication.Model.Helpers;
 
 public class UserInfo {
 
+    private long userId;
     private String firstName;
     private String lastName;
     private String email;
     private String image;
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -39,7 +48,8 @@ public class UserInfo {
         this.image = image;
     }
 
-    public UserInfo(String firstName, String lastName, String email, String image) {
+    public UserInfo(long userId, String firstName, String lastName, String email, String image) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

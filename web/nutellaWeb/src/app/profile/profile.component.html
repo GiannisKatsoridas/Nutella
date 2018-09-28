@@ -7,13 +7,9 @@
 <body>
 	<div class ="card">
 		<img src="img.jpg" alt="George" style="width:100%">
-		<h1>Little George</h1>
-		<p class="title"> Student </p>
-		<p> University of Athens </p>
-		<a href="#"><i class="fa fa-dribbble"></i></a> <!-- email here -->
-		<a href="#"><i class="fa fa-twitter"></i></a>
-		<a href="#"><i class="fa fa-facebook"></i></a> 
-	    <p><button>Contact</button></p>
+		<h1>{{name}}</h1>
+		<p> {{birthDate}} </p>
+	    <p><button (click)="sendConnectionRequest()">Connect</button></p>
 	</div>
 
 	<div class="card"> 
