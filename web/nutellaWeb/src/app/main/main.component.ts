@@ -2,9 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
-import {CommentResponse, GetInfoResponse, GetPostsResponse, LikeResponse} from "../Models/Response";
+import {
+    CommentResponse,
+    GetInfoResponse,
+    GetPostsResponse,
+    InsertPostResponse,
+    LikeResponse,
+    UploadFileResponse
+} from "../Models/Response";
 import {Article} from "../Models/Helpers";
-import {CommentRequest, LikeRequest} from "../Models/Request";
+import {CommentRequest, InsertPostRequest, LikeRequest} from "../Models/Request";
 
 @Component({
   selector: 'app-main',
@@ -23,6 +30,10 @@ export class MainComponent implements OnInit {
     public commentatorsIndex: number[];
     private likeRequest: LikeRequest;
     private commentRequest: CommentRequest;
+    public createPostFlag: boolean = false;
+    private selectedFile: File = null;
+    private mediaLink: string;
+    private uploadPost: InsertPostRequest;
 
     constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
 
@@ -161,5 +172,58 @@ export class MainComponent implements OnInit {
             this.getPosts();
 
         })
+    }
+
+    onFileSelected(event) {
+        this.selectedFile = event.target.files[0];
+    }
+
+    onUpload() {
+
+/*        const fd = new FormData();
+        const httpHeaders = {
+            headers: new HttpHeaders({
+                'Content-Type': 'multipart/form-data'
+            })
+        };
+
+        console.log(this.selectedFile);
+
+        fd.append('file', this.selectedFile, this.selectedFile.name);
+
+        this.http.post<UploadFileResponse>('http://localhost:8080/api/rest/file/upload', fd).subscribe((data: UploadFileResponse) => {
+
+            this.mediaLink = data.link;
+
+        });*/
+
+    }
+
+    public postPost(post: string){
+
+        const httpHeaders = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        this.uploadPost = new class implements InsertPostRequest {
+            media: string[];
+            text: string;
+            userId: number;
+        };
+
+        this.uploadPost.userId = +this.userId;
+        this.uploadPost.text = post;
+        if(this.mediaLink != null)
+            this.uploadPost.media = [this.mediaLink];
+        else
+            this.uploadPost.media = [];
+        this.http.post<InsertPostResponse>("http://localhost:8080/api/rest/post/insert", this.uploadPost, httpHeaders).subscribe((data: InsertPostResponse) => {
+
+            this.getPosts();
+
+        });
+
     }
 }

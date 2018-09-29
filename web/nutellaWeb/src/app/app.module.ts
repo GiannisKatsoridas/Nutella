@@ -28,6 +28,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ExternalProfileComponent } from './profile/external-profile/external-profile.component';
 import {ExternalPostComponent} from "./main/external-post/external-post.component";
 import { MyJobsComponent } from './jobs/my-jobs/my-jobs.component';
+import {UploadComponent} from "./upload/upload.component";
 
 export const appRoutes: Routes = [
     { path: '', component: MainComponent },
@@ -47,6 +48,7 @@ export const appRoutes: Routes = [
     { path: 'external_profile', component: ExternalProfileComponent },
     { path: 'post', component: ExternalPostComponent },
     { path: 'my_jobs', component: MyJobsComponent },
+    { path: 'upload', component: UploadComponent },
 ];
 
 @NgModule({
@@ -74,7 +76,8 @@ export const appRoutes: Routes = [
     LogoutComponent,
     ExternalProfileComponent,
     ExternalPostComponent,
-    MyJobsComponent
+    MyJobsComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

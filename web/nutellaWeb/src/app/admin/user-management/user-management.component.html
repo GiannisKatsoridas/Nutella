@@ -1,3 +1,14 @@
-<p>
-  user-management works!
-</p>
+<h1> User List </h1>
+
+<br><br>
+
+<ol>
+         <li *ngFor="let user of users;">
+            {{user.firstName + " " + user.lastName}}<input type="checkbox">
+            {{userInfo[getIndex(user.id)]}}
+        </li>
+    </ol>
+
+<br>
+
+<button>Download selected user data</button>

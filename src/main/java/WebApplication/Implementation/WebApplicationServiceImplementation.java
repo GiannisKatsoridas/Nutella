@@ -11,9 +11,15 @@ import WebApplication.Model.Helpers.Article;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -492,5 +498,57 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         Article post = db.GetPost(request.getPostId());
 
         return new GetPostResponse(post);
+    }
+
+    public UploadFileResponse UploadImage(InputStream request, long userId) {
+
+        FileOutputStream out;
+        int cursor;
+
+/*
+        byte[] image = null, image2 = null;
+
+        try {
+            image = IOUtils.toByteArray(new FileInputStream("/home/kats/IdeaProjects/Nutella/unnamed.jpg"));
+            image2 = IOUtils.toByteArray(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(image != image2) {
+            System.out.println("ERROR");
+        }
+*/
+
+
+        try{
+
+            out = new FileOutputStream(new File("images/" + userId +".jpg"));
+
+            while((cursor = request.read())!=-1){
+                out.write(cursor);
+            }
+        }
+        catch (Exception e ){
+            return new UploadFileResponse("null");
+        }
+
+
+        try {
+            out.close();
+            request.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            db.InsertSingleImage(userId, "images/" + userId +".jpg");
+        } catch (Exception e) {
+            return new UploadFileResponse("null");
+        }
+
+
+        return new UploadFileResponse("images/" + userId + ".jpg");
+
     }
 }

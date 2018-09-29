@@ -2,6 +2,11 @@ package WebApplication.Interface;
 
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public interface WebApplicationServiceInterface {
 
@@ -74,4 +79,6 @@ public interface WebApplicationServiceInterface {
     GetMyJobApplicationsResponse GetMyApplications(GetMyApplicationsRequest request);
 
     GetPostResponse GetPost(GetPostRequest request);
+
+    UploadFileResponse UploadImage(InputStream request, long userId);
 }

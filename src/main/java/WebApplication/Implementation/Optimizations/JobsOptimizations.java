@@ -10,13 +10,16 @@ public class JobsOptimizations {
 
     public static void AddJob(long jobId){
 
+        Long f = 0L;
+
         for(Long l: UserApplications.values.keySet()){
 
             UserApplications.values.get(l).add(0);
 
+            f = l;
         }
 
-        UserApplications.mapsPositions.put(jobId, UserApplications.values.size()-1);
+        UserApplications.mapsPositions.put(jobId, UserApplications.values.get(f).size()-1);
 
     }
 

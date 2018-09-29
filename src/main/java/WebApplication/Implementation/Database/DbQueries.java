@@ -1037,4 +1037,20 @@ public class DbQueries {
 
         return new Article(postId, posts.get(0).getUserId(), posts.get(0).getText(), likes, comments);
     }
+
+    public void InsertSingleImage(long userId, String link) throws Exception {
+
+        PicturesEntity pic = DbQueriesHelper.CreatePicturesEntity(new PicturesEntity(), userId, link);
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+
+        em.persist(pic);
+        tx.commit();
+
+        em.close();
+
+    }
 }

@@ -1,4 +1,25 @@
 <br><br>
+
+<input *ngIf="!createPostFlag" type="button" value="Create New Post!" (click)="createPostFlag = true">
+
+<div class="container">
+    <form>
+        <label>Post:</label>
+        <textarea #post placeholder="How are you today?..." style="height:200px"></textarea>
+
+        <label>File upload</label>
+
+        <input type="file" accept="image/*, audio/*, video/*" (change)="onFileSelected($event)">
+
+        <br>
+
+        <button type="button" (click)="onUpload()">Upload</button>
+
+        <input (click)="postPost(post.value)" type="button" value="Post!">
+    </form>
+</div>
+
+<br><br>
 <div *ngFor="let post of posts">
 
 

@@ -208,3 +208,9 @@ export interface UpdatePasswordResponse {
     
     
 }
+
+export interface UploadFileResponse {
+
+    link: string;
+
+}

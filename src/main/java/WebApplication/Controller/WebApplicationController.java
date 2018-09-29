@@ -1,14 +1,20 @@
 package WebApplication.Controller;
 
-
-import WebApplication.Implementation.Optimizations.KNN;
 import WebApplication.Implementation.WebApplicationServiceImplementation;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
-@Consumes({"application/json"})
 @Produces({"application/json"})
 public class WebApplicationController {
 
@@ -327,5 +333,34 @@ public class WebApplicationController {
         GetPostRequest request = new GetPostRequest(postId);
 
         return service.GetPost(request);
+    }
+
+    @POST
+    @Path("image/upload")
+    public UploadFileResponse UploadImage(@RequestParam("file") MultipartFile[] files/*@FormDataParam("file") InputStream request, @FormDataParam("user") String userId*/){
+
+        String fileName = null;
+        String msg = "";
+        if (files != null && files.length >0) {
+            for(int i =0 ;i< files.length; i++){
+                try {
+                    fileName = files[i].getOriginalFilename();
+                    byte[] bytes = files[i].getBytes();
+                    BufferedOutputStream buffStream =
+                            new BufferedOutputStream(new FileOutputStream(new File("myPic2.jpg")));
+                    buffStream.write(bytes);
+                    buffStream.close();
+                    msg += "You have successfully uploaded " + fileName +"<br/>";
+                } catch (Exception e) {
+                    return new UploadFileResponse("You failed to upload " + fileName + ": " + e.getMessage() +"<br/>");
+                }
+            }
+            return new UploadFileResponse(msg);
+        } else {
+            return new UploadFileResponse("Unable to upload. File is empty.");
+        }
+
+        //return service.UploadImage(request, Long.parseLong(userId));
+
     }
 }

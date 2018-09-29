@@ -6,13 +6,16 @@ public class PostsOptimizations {
 
     public static void AddPost(long postId){
 
+        Long f = 0L;
+
         for(Long u: PostsInterest.values.keySet()){
 
             PostsInterest.values.get(u).add(0);
 
+            f = u;
         }
 
-        PostsInterest.mapsPositions.put(postId, PostsInterest.values.size()-1);
+        PostsInterest.mapsPositions.put(postId, PostsInterest.values.get(f).size()-1);
 
     }
 
