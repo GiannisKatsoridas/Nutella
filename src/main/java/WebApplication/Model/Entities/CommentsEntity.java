@@ -25,6 +25,7 @@ public class CommentsEntity {
     private long userId;
     private long postId;
     private String text;
+    private java.sql.Timestamp timeStamp;
 
     @Id
     @Column(name = "Timestamp")
@@ -36,7 +37,6 @@ public class CommentsEntity {
         this.timeStamp = timeStamp;
     }
 
-    private java.sql.Timestamp timeStamp;
 
     @Id
     @Column(name = "UserID")

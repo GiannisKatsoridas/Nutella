@@ -1,0 +1,25 @@
+<br><br>
+<div *ngFor="let post of posts">
+
+
+    <h4>{{postCreators[postsIndex.indexOf(post.postId)]}}</h4>
+
+    <h3>{{post.text}}</h3>
+    <p>Likes: {{post.likes.length}}</p>
+    <input *ngIf="!postsLikes[postsIndex.indexOf(post.postId)]" (click)="like(post.postId)" type="button" value="Like!">
+    <div *ngIf="!commentsShown[postsIndex.indexOf(post.postId)]">
+        <p>Comments: </p><button (click)="commentsShown[postsIndex.indexOf(post.postId)] = true;">Show Comments!</button>
+    </div>
+    <div *ngIf="commentsShown[postsIndex.indexOf(post.postId)]">
+        <button (click)="commentsShown[postsIndex.indexOf(post.postId)] = false;">Hide Comments!</button>
+        <div *ngFor="let comment of post.comments">
+            <p>{{commentators[commentatorsIndex.indexOf(comment.userId)]}}: {{comment.text}}</p>
+        </div>
+        <div>
+            <textarea #content placeholder="Your comment here..." style="height:200px"></textarea>
+            <input (click)="comment(post.postId, content.value)" type="button" value="Comment!">
+        </div>
+    </div>
+
+    <br><br>
+</div>

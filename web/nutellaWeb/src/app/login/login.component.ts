@@ -43,10 +43,9 @@ export class LoginComponent implements OnInit {
 
           if(data.isAdmin){
             this.router.navigate(['admin']);
-            return;
           }
           else{
-            this.router.navigate(['']);
+            this.router.navigate(['/']);
           }
 
           this.cookieService.set("userId", data.userId.toString());

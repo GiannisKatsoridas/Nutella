@@ -11,6 +11,12 @@ import java.util.Objects;
         query = "select n from NotificationsEntity n where n.userTo = :userId order by n.timestamp desc"
 )
 public class NotificationsEntity {
+
+    // Category: 4 - A user has accepted the friend request
+    // Category: 3 - A user has sent you a friend request
+    // Category: 2 - A user has commented on one of your posts
+    // Category: 1 - A user has liked one of your posts
+
     private long id;
     private long userFrom;
     private long userTo;

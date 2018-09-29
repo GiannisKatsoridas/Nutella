@@ -8,6 +8,10 @@ import java.util.Objects;
 @Table(name = "posts", schema = "nutella", catalog = "")
 @NamedQueries({
         @NamedQuery(
+                name = "PostsEntity.GetPost",
+                query = "select p from PostsEntity p where p.id = :postId"
+        ),
+        @NamedQuery(
                 name = "PostsEntity.GetPostsFromFriend1",
                 query = "select p from UsersEntity u join FriendsEntity f on u.id = f.user2 join PostsEntity p on p.userId = f.user1 where f.user2 = :userId"
         ),

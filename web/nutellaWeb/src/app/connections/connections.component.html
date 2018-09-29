@@ -12,6 +12,7 @@
 <ol>
     <li *ngFor="let connection of connections.users;">
         {{connection.firstName + " " + connection.lastName}}
+        <button (click)="getUserProfile(connection.userId)">Show Profile!</button>
     </li>
 </ol>
 

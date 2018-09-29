@@ -1,6 +1,7 @@
 package WebApplication.Implementation.Database;
 
 import WebApplication.Implementation.Optimizations.KNN;
+import WebApplication.Model.Helpers.Article;
 import WebApplication.Model.Helpers.JobSkillsAlike;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
@@ -36,8 +37,8 @@ public class DbQueries {
             em.persist(user);
             tx.commit();
         }
-        catch(PersistenceException e){
-            tx.rollback();
+        catch(Exception e){
+
             id = -2;
         }
 
@@ -61,8 +62,8 @@ public class DbQueries {
             em.persist(picture);
             tx.commit();
         }
-        catch(PersistenceException e){
-            tx.rollback();
+        catch(Exception e){
+
             id = -2;
         }
 
@@ -142,7 +143,7 @@ public class DbQueries {
         try{
             em.persist(post);
         }
-        catch(PersistenceException e){
+        catch(Exception e){
             id = -1;
         }
 
@@ -157,7 +158,7 @@ public class DbQueries {
         try {
             em.persist(media);
         }
-        catch (PersistenceException e){
+        catch (Exception e){
             postId = -1;
         }
 
@@ -198,7 +199,7 @@ public class DbQueries {
             em.persist(job);
             jobId = job.getId();
         }
-        catch(PersistenceException e){
+        catch(Exception e){
             jobId = -1;
         }
 
@@ -219,8 +220,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch(PersistenceException e){
-            tx.rollback();
+        catch(Exception e){
+
             result = false;
         }
 
@@ -243,8 +244,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch(PersistenceException e){
-            tx.rollback();
+        catch(Exception e){
+
             result = false;
         }
 
@@ -446,8 +447,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -505,8 +506,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -529,8 +530,8 @@ public class DbQueries {
             tx.commit();
             success = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             success = false;
         }
 
@@ -552,8 +553,8 @@ public class DbQueries {
             tx.commit();
             result = notification.getId();
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = -1;
         }
 
@@ -636,8 +637,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -663,8 +664,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -700,8 +701,8 @@ public class DbQueries {
             tx.commit();
             result = exp.getExperienceId();
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = -1;
         }
 
@@ -724,8 +725,8 @@ public class DbQueries {
             tx.commit();
             result = edu.getEducationId();
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = -1;
         }
 
@@ -748,8 +749,8 @@ public class DbQueries {
             tx.commit();
             result = sk.getSkillId();
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = -1;
         }
 
@@ -810,8 +811,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -836,8 +837,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -862,8 +863,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -886,8 +887,8 @@ public class DbQueries {
             tx.commit();
             result = true;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             result = false;
         }
 
@@ -953,8 +954,8 @@ public class DbQueries {
             tx.commit();
             id = userId;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             id = -1;
         }
 
@@ -979,8 +980,8 @@ public class DbQueries {
             tx.commit();
             id = userId;
         }
-        catch (PersistenceException e){
-            tx.rollback();
+        catch (Exception e){
+
             id = -1;
         }
 
@@ -998,10 +999,42 @@ public class DbQueries {
             em.persist(jr);
             result = true;
         }
-        catch (PersistenceException e){
+        catch (Exception e){
             result = false;
         }
 
         return result;
+    }
+
+
+    public List<JobapplicationsEntity> GetMyApplications(long userId){
+
+        List<JobapplicationsEntity> jobs;
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        try {
+            jobs = em.createNamedQuery("JobapplicationsEntity.GetJobsByUser").setParameter("userId", userId).getResultList();
+        }
+        catch(Exception ex){
+            jobs = new ArrayList<JobapplicationsEntity>();
+        }
+
+        em.close();
+
+        return jobs;
+    }
+
+    public Article GetPost(long postId) {
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<PostsEntity> posts = em.createNamedQuery("PostsEntity.GetPost").setParameter("postId", postId).setMaxResults(1).getResultList();
+        List<LikesEntity> likes = em.createNamedQuery("LikesEntity.GetLikes").setParameter("postId", postId).getResultList();
+        List<CommentsEntity> comments = em.createNamedQuery("CommentsEntity.GetComments").setParameter("postId", postId).getResultList();
+
+        em.close();
+
+        return new Article(postId, posts.get(0).getUserId(), posts.get(0).getText(), likes, comments);
     }
 }

@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-</head>
-<body>
+<app-job-create></app-job-create>
+<div *ngFor="let job of jobsFromFriends">
 
+    <h4>{{job.title}}</h4>
+    <p>{{job.description}}</p>
+    <p>{{job.date}}</p>
 
-</body>
-</html>
+    <button *ngIf="!hasApplied(job.id)" type="button" (click)="apply(job.id)">Apply Now!</button>
+
+</div>
+
+<div *ngFor="let job of jobsAlike">
+
+    <h4>{{job.title}}</h4>
+    <p>{{job.description}}</p>
+    <p>{{job.date}}</p>
+
+    <button *ngIf="!hasApplied(job.id)" type="button" (click)="apply(job.id)">Apply Now!</button>
+
+</div>
+
+<div *ngFor="let job of jobsFromNeighbors">
+
+    <h4>{{job.title}}</h4>
+    <p>{{job.description}}</p>
+    <p>{{job.date}}</p>
+
+    <button *ngIf="!hasApplied(job.id)" type="button" (click)="apply(job.id)">Apply Now!</button>
+
+</div>

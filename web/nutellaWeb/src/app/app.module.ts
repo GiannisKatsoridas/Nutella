@@ -25,25 +25,29 @@ import { LoginComponent } from './login/login.component';
 import { ComposeComponent } from './messages/compose/compose.component';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ExternalProfileComponent } from './profile/external-profile/external-profile.component';
+import {ExternalPostComponent} from "./main/external-post/external-post.component";
+import { MyJobsComponent } from './jobs/my-jobs/my-jobs.component';
 
 export const appRoutes: Routes = [
-  { path: '', component: MainComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'jobs', component: JobsComponent },
-  { path: 'connections', component: ConnectionsComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'change_pwd', component: ChangePwdComponent },
-  { path: 'change_email', component: ChangeEmailComponent },
-  { path: 'messages', component: MessagesComponent },
-  { path: 'compose', component: ComposeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'notifications', component: NotificationsComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'user_management', component: UserManagementComponent },
+    { path: '', component: MainComponent },
+    { path: 'profile', component: ProfileComponent},
+    { path: 'jobs', component: JobsComponent },
+    { path: 'connections', component: ConnectionsComponent },
+    { path: 'settings', component: SettingsComponent },
+    { path: 'change_pwd', component: ChangePwdComponent },
+    { path: 'change_email', component: ChangeEmailComponent },
+    { path: 'messages', component: MessagesComponent },
+    { path: 'compose', component: ComposeComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'notifications', component: NotificationsComponent },
+    { path: 'admin', component: AdminComponent },
+    { path: 'user_management', component: UserManagementComponent },
+    { path: 'external_profile', component: ExternalProfileComponent },
+    { path: 'post', component: ExternalPostComponent },
+    { path: 'my_jobs', component: MyJobsComponent },
 ];
-
-export const loggedIn: boolean = false;
 
 @NgModule({
   declarations: [
@@ -67,7 +71,10 @@ export const loggedIn: boolean = false;
     LoginComponent,
     ComposeComponent,
     NotificationsComponent,
-    LogoutComponent
+    LogoutComponent,
+    ExternalProfileComponent,
+    ExternalPostComponent,
+    MyJobsComponent
   ],
   imports: [
     BrowserModule,

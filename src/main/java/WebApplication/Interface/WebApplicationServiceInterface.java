@@ -70,4 +70,8 @@ public interface WebApplicationServiceInterface {
     UpdateEmailResponse UpdateEmail(UpdateEmailRequest request);
 
     UpdatePasswordResponse UpdatePassword(UpdatePasswordRequest request);
+
+    GetMyJobApplicationsResponse GetMyApplications(GetMyApplicationsRequest request);
+
+    GetPostResponse GetPost(GetPostRequest request);
 }

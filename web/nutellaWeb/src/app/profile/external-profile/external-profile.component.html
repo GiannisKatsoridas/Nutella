@@ -1,0 +1,30 @@
+
+<div class ="card">
+  <img src="img.jpg" alt="George" style="width:100%">
+  <h1>{{name}}</h1>
+  <p><button *ngIf="!isFriend && !connectionRequestSent && !hasSentConnectionRequestToUser" (click)="sendConnection()">Connect</button></p>
+  <p><button *ngIf="hasSentConnectionRequestToUser" (click)="acceptConnection()">Accept Connection</button></p>
+  <p><button *ngIf="hasSentConnectionRequestToUser" (click)="rejectConnection()">Reject Connection</button></p>
+</div>
+<div *ngIf="isFriend">
+  <div class="card">
+    <a (click)="getEducation()"><h1>Education</h1></a>
+    <div *ngFor="let edu of education">
+      {{edu.degree}} - {{edu.institution}} <br> Years: {{edu.yearFrom}} - {{edu.yearTo}} <br><br>
+    </div>
+  </div>
+
+  <div class="card">
+    <a (click)="getExperience()"><h1>Work Experience</h1></a>
+    <div *ngFor="let exp of experience">
+      {{exp.position}} - {{exp.companyTitle}} <br> Years: {{exp.dateFrom}} - {{exp.dateTo}} <br><br>
+    </div>
+  </div>
+
+  <div class="card">
+    <a (click)="getSkills()"><h1>Skills</h1></a>
+    <div *ngFor="let sk of skills">
+      {{sk.skill}}<br>
+    </div>
+  </div>
+</div>

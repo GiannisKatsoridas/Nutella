@@ -21,7 +21,11 @@
   <div class="messages">
 
     <div *ngFor="let message of messages.messages;">
-      <div class="message">
+      <div *ngIf="message.userFrom == userId" class="message">
+        <span class="date">{{message.timestamp}}</span>
+        <span class="title">{{message.content}}</span>
+      </div>
+      <div *ngIf="message.userFrom != userId" class="message-friend">
         <span class="date">{{message.timestamp}}</span>
         <span class="title">{{message.content}}</span>
       </div>

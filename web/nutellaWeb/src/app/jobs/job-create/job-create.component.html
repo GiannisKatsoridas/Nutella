@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-</head>
-<body>
+<div class="container">
+    <form>
+        <label>Job Title:</label>
+        <input #title type="text" placeholder="Job Title">
 
+        <label>Job Description:</label>
+        <textarea #desc placeholder="Job description here..." style="height:200px"></textarea>
 
-</body>
-</html>
+        <label>Job Skills:</label>
+        <textarea #skills placeholder="Insert job skills separated by space..." style="height:200px"></textarea>
+
+        <h4>{{errorMessage}}</h4>
+
+        <input (click)="postJob(title.value, desc.value, skills.value)" type="button" value="Add">
+    </form>
+</div>

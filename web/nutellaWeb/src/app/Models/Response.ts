@@ -1,4 +1,17 @@
-import {Message, User, UserInfo} from "./Helpers";
+import {
+    Education,
+    Experience,
+    Message,
+    Skill,
+    User,
+    UserInfo,
+    Notification,
+    Job,
+    JobApplication,
+    Article,
+    Comment,
+    Like
+} from "./Helpers";
 
 export interface LoginResponse {
 
@@ -29,7 +42,12 @@ export interface GetInfoResponse {
 
 export interface GetPostsResponse {
 
-    //articles: Articles[];
+    articles: Article[];
+}
+
+export interface GetPostResponse {
+
+    post: Article;
 }
 
 export interface InsertPostResponse {
@@ -50,6 +68,7 @@ export interface CommentResponse {
 export interface GetConnectionsResponse {
 	
 	users: UserInfo[];
+
 }
 
 export interface GetSearchResultsResponse {
@@ -59,14 +78,15 @@ export interface GetSearchResultsResponse {
 
 export interface GetJobsResponse {
     
-    //fromFriends: Jobs[];
-    //alike: Jobs[];
-    //fromNeighbors: Jobs[];
+    fromFriends: Job[];
+    alike: Job[];
+    fromNeighbors: Job[];
 }
 
 export interface JobApplicationResponse {
     
     success: boolean;
+
 }
 
 export interface InsertJobResponse {
@@ -79,9 +99,15 @@ export interface GetMyApplicantsResponse {
     users: UserInfo[];
 }
 
-export interface GetMyJobsResponse {
+export interface GetMyApplicationsResponse {
     
-    //jobs: Jobs[];
+    jobs: JobApplication[];
+}
+
+export interface GetMyJobsResponse {
+
+    jobs: Job[];
+
 }
 
 export interface EditJobResponse {
@@ -91,13 +117,15 @@ export interface EditJobResponse {
 
 export interface SendConnectionResponse {
     
-    
+    notificationId: number;
+
 }
 
-export interface GetConnectionResponse {
+
+export interface GetConnectionRequestsResponse {
 
     users: UserInfo[];
-	
+
 }
 
 export interface AcceptConnectionResponse {
@@ -112,7 +140,10 @@ export interface RejectConnectionResponse {
 
 export interface GetPersonalInfoResponse {
     
-    
+    experience: Experience[];
+    education: Education[];
+    skills: Skill[];
+
 }
 
 export interface PostExperienceResponse {
@@ -157,7 +188,8 @@ export interface GetMessagesResponse {
 }
 
 export interface GetNotificationsResponse {
-    
+
+    notifications: Notification[];
     
 }
 

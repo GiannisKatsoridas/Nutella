@@ -108,14 +108,14 @@ export interface GetConnectionRequest {
 
 export interface AcceptConnectionRequest {
     
-    userIdFrom: number;
-    userIdTo: number;
+    userFromId: number;
+    userToId: number;
 }
 
 export interface RejectConnectionRequest {
-    
-    userIdFrom: number;
-    userIdTo: number;
+
+    userFromId: number;
+    userToId: number;
 }
 
 export interface GetPersonalInfoRequest {
@@ -128,8 +128,8 @@ export interface PostExperienceRequest {
     userId: number;
     companyTitle: string;
     position: string;
-    //dateFrom: java.sql.Date;
-    //dataTo: java.sql.Date;
+    dateFrom: string;
+    dateTo: string;
 }
 
 export interface PostEducationRequest {
@@ -152,8 +152,8 @@ export interface UpdateExperienceRequest {
     experienceId: number;
     companyTitle: string;
     position: string;
-    //dateFrom: java.sql.Date;
-    //dateTo: java.sql.Date;
+    dateFrom: string;
+    dateTo: string;
 }
 
 export interface UpdateEducationRequest {

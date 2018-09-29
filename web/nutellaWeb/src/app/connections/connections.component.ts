@@ -6,6 +6,7 @@ import {UserInfo} from "../Models/Helpers";
 import { CookieService } from "ngx-cookie-service";
 import {NavbarComponent} from "../navbar/navbar.component";
 import {AppModule} from "../app.module";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-connections',
@@ -20,7 +21,7 @@ export class ConnectionsComponent implements OnInit {
     public errorMessage: string = "";
     private readonly userId: number;
 
-    constructor(private http: HttpClient, private cookieService: CookieService) {
+    constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) {
 
         this.userId = +this.cookieService.get("userId");
 
@@ -69,7 +70,7 @@ export class ConnectionsComponent implements OnInit {
 
     public getUserProfile(userId: number){
 
-
+        this.router.navigate(['external_profile'], {queryParams: {userId: userId}});
 
     }
 }

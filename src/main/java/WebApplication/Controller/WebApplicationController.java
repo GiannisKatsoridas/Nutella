@@ -309,4 +309,23 @@ public class WebApplicationController {
 
     }
 
+    @GET
+    @Path("job/getmyapplications/{userId}")
+    public GetMyJobApplicationsResponse GetMyApplications(@PathParam("userId") final long userId){
+
+        GetMyApplicationsRequest request = new GetMyApplicationsRequest(userId);
+
+        GetMyJobApplicationsResponse resp = service.GetMyApplications(request);
+
+        return resp;
+    }
+
+    @GET
+    @Path("post/get/{postId}")
+    public GetPostResponse GetPost(@PathParam("postId") final long postId){
+
+        GetPostRequest request = new GetPostRequest(postId);
+
+        return service.GetPost(request);
+    }
 }

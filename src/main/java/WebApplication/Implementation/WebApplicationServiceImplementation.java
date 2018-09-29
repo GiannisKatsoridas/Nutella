@@ -93,7 +93,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
             tx.commit();
         }
         else{
-            tx.rollback();
+
         }
 
         PostsOptimizations.AddPost(postId);
@@ -123,7 +123,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         jobId = db.InsertJob(em, job);
 
         if(jobId == -1){
-            tx.rollback();
+
         }
         else {
             boolean result = true;
@@ -131,7 +131,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
                 JobrequirementsEntity jr = DbQueriesHelper.CreateJobRequirement(new JobrequirementsEntity(), j, jobId);
                 result = db.InsertJobRequirement(em, jr);
                 if(!result){
-                    tx.rollback();
+
                     break;
                 }
             }
@@ -205,7 +205,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
             likes = db.GetLikes(postsFromFriends.get(i).getId());
             comments = db.GetComments(postsFromFriends.get(i).getId());
-            articles.add(new Article(postsFromFriends.get(i).getText(), likes, comments));
+            articles.add(new Article(postsFromFriends.get(i).getId(), postsFromFriends.get(i).getUserId(), postsFromFriends.get(i).getText(), likes, comments));
 
         }
 
@@ -476,5 +476,21 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         long id = db.UpdatePassword(request.getUserId(), request.getNewPassword());
 
         return new UpdatePasswordResponse(id);
+    }
+
+    public GetMyJobApplicationsResponse GetMyApplications(GetMyApplicationsRequest request) {
+
+        List<JobapplicationsEntity> jobs = db.GetMyApplications(request.getUserId());
+
+        GetMyJobApplicationsResponse resp = new GetMyJobApplicationsResponse(jobs);
+
+        return resp;
+    }
+
+    public GetPostResponse GetPost(GetPostRequest request) {
+
+        Article post = db.GetPost(request.getPostId());
+
+        return new GetPostResponse(post);
     }
 }

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { CookieService } from "ngx-cookie-service";
-import {GetConnectionResponse, GetSearchResultsResponse, SendMessageResponse} from "../../Models/Response";
+import {
+    GetConnectionsResponse,
+    GetSearchResultsResponse,
+    SendMessageResponse
+} from "../../Models/Response";
 import {forEach} from "@angular/router/src/utils/collection";
 import {SendMessageRequest} from "../../Models/Request";
 import {Router, RouterModule} from "@angular/router";
@@ -30,7 +34,7 @@ export class ComposeComponent implements OnInit {
 
     public verifyReceiver(name: string, content: string) {
 
-        this.http.get<GetConnectionResponse>("http://localhost:8080/api/rest/user/getconnections/" + this.userId).subscribe((data: GetConnectionResponse) => {
+        this.http.get<GetConnectionsResponse>("http://localhost:8080/api/rest/user/getconnections/" + this.userId).subscribe((data: GetConnectionsResponse) => {
 
             for (let user of data.users) {
 
