@@ -8,6 +8,7 @@ import WebApplication.Implementation.Optimizations.PostsOptimizations;
 import WebApplication.Interface.*;
 import WebApplication.Model.Entities.*;
 import WebApplication.Model.Helpers.Article;
+import WebApplication.Model.Helpers.MyXMLObject;
 import WebApplication.Model.Helpers.UserInfo;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
@@ -45,10 +46,8 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         id = db.InsertUser(user);
 
-        if(id>0) {
-            PicturesEntity picture = DbQueriesHelper.CreatePicturesEntity(new PicturesEntity(), id, request.getImage());
-            id = db.InsertPicture(picture);
-        }
+        JobsOptimizations.AddUser(id);
+        PostsOptimizations.AddUser(id);
 
         return new RegisterResponse(id);
     }
@@ -386,7 +385,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         return new PostSkillResponse(id);
     }
 
-    public GetPersonalInfoResponse GetPersonalInfo(GetConnectionRequestsRequest request) {
+    public GetPersonalInfoResponse GetPersonalInfo(GetPersonalInfoRequest request) {
 
         List<ExperienceEntity> experience = db.GetExperience(request.getUserId());
         List<EducationEntity> education = db.GetEducation(request.getUserId());
@@ -500,12 +499,23 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         return new GetPostResponse(post);
     }
 
-    public UploadFileResponse UploadImage(InputStream request, long userId) {
+    public UploadFileResponse UploadImage(/*InputStream request, */long userId) {
 
-        FileOutputStream out;
+        String image = "images/myPic.jpg";          // Hardcoded value
+        String imageLink = null;
+
+        try {
+            imageLink = db.InsertSingleImage(userId, image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new UploadFileResponse(imageLink);
+
+       /* FileOutputStream out;
         int cursor;
 
-/*
+*//*
         byte[] image = null, image2 = null;
 
         try {
@@ -518,7 +528,7 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         if(image != image2) {
             System.out.println("ERROR");
         }
-*/
+*//*
 
 
         try{
@@ -548,7 +558,45 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
         }
 
 
-        return new UploadFileResponse("images/" + userId + ".jpg");
+        return new UploadFileResponse("images/" + userId + ".jpg");*/
 
+    }
+
+    public MyXMLObject ExportUser(ExportUserRequest request) {
+
+        GetPersonalInfoResponse personalInfo = GetPersonalInfo(new GetPersonalInfoRequest(request.getUserId()));
+
+        List<UserInfo> connections = GetConnections(new GetConnectionsRequest(request.getUserId())).getUsers();
+
+        List<PostsEntity> posts = db.GetMyPosts(request.getUserId());
+
+        List<LikesEntity> likes = db.GetMyLikes(request.getUserId());
+
+        List<CommentsEntity> comments = db.GetMyComments(request.getUserId());
+
+        return new MyXMLObject(request.getUserId(), personalInfo.getEducation(), personalInfo.getExperience(), connections, posts, likes, comments);
+    }
+
+    public GetImageResponse GetImage(long userId) {
+
+        String imageLink = db.GetPictureLink(userId);
+
+        byte[] bytes = null;
+
+        try {
+
+            FileInputStream fos = new FileInputStream(imageLink);
+            bytes = IOUtils.toByteArray(fos);
+        } catch (FileNotFoundException e) {
+
+            return new GetImageResponse(null);
+
+        } catch (IOException e) {
+
+            return new GetImageResponse(null);
+
+        }
+
+        return new GetImageResponse(bytes);
     }
 }

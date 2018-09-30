@@ -4,15 +4,11 @@ import WebApplication.Implementation.Optimizations.KNN;
 import WebApplication.Model.Helpers.Article;
 import WebApplication.Model.Helpers.JobSkillsAlike;
 import WebApplication.Model.Helpers.UserInfo;
-import WebApplication.Model.Requests.*;
-import WebApplication.Model.Responses.*;
 import WebApplication.Model.Entities.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.*;
-
-import static java.lang.System.in;
 
 public class DbQueries {
 
@@ -46,30 +42,6 @@ public class DbQueries {
 
         return id;
 
-    }
-
-
-    public long InsertPicture(PicturesEntity picture){
-
-        long id = picture.getUserId();
-
-        EntityManager em = JPAResource.factory.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        tx.begin();
-
-        try {
-            em.persist(picture);
-            tx.commit();
-        }
-        catch(Exception e){
-
-            id = -2;
-        }
-
-        em.close();
-
-        return id;
     }
 
 
@@ -1025,6 +997,7 @@ public class DbQueries {
         return jobs;
     }
 
+
     public Article GetPost(long postId) {
 
         EntityManager em = JPAResource.factory.createEntityManager();
@@ -1038,19 +1011,81 @@ public class DbQueries {
         return new Article(postId, posts.get(0).getUserId(), posts.get(0).getText(), likes, comments);
     }
 
-    public void InsertSingleImage(long userId, String link) throws Exception {
+
+    public String InsertSingleImage(long userId, String link) {
 
         PicturesEntity pic = DbQueriesHelper.CreatePicturesEntity(new PicturesEntity(), userId, link);
 
         EntityManager em = JPAResource.factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
-        tx.begin();
+        try {
 
-        em.persist(pic);
-        tx.commit();
+            PicturesEntity p = em.find(PicturesEntity.class, userId);
+
+            tx.begin();
+
+            if (p == null) {
+                em.persist(pic);
+            } else {
+                p.setLink(link);
+            }
+
+            tx.commit();
+        }
+        catch (Exception ex){
+            return "null";
+        }
 
         em.close();
 
+        return link;
+    }
+
+
+    public List<PostsEntity> GetMyPosts(long userId) {
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<PostsEntity> posts = em.createNamedQuery("PostsEntity.getPostsByUser").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return posts;
+    }
+
+
+    public List<LikesEntity> GetMyLikes(long userId) {
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<LikesEntity> likes = em.createNamedQuery("LikesEntity.getLikesByUser").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return likes;
+    }
+
+
+    public List<CommentsEntity> GetMyComments(long userId) {
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<CommentsEntity> comments = em.createNamedQuery("CommentsEntity.getCommentsByUser").setParameter("userId", userId).getResultList();
+
+        em.close();
+
+        return comments;
+    }
+
+    public String GetPictureLink(long userId) {
+
+        EntityManager em = JPAResource.factory.createEntityManager();
+
+        List<PicturesEntity> pics = em.createNamedQuery("PicturesEntity.getPictureFromUser").setParameter("userId", userId).getResultList();
+
+        PicturesEntity pic = pics.get(0);
+
+        return pic.getLink();
     }
 }

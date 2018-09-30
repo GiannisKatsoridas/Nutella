@@ -30,6 +30,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "PostsEntity.getDifferentPostsFromNeighborsComments",
                 query = "select p from PostsEntity p join CommentsEntity c on p.id = c.postId where c.userId = :neighborId and c.timeStamp > :timestamp and c.postId not in (select pa.id from PostsEntity pa join CommentsEntity ca on pa.id = ca.postId where ca.userId = :userId)"
+        ),
+        @NamedQuery(
+                name = "PostsEntity.getPostsByUser",
+                query = "select p from PostsEntity p where p.userId = :userId"
         )
 })
 public class PostsEntity {

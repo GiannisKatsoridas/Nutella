@@ -11,7 +11,6 @@ public class RegisterRequest {
     private String firstName;
     private String lastName;
     private String phone;
-    private String image;
 
 
     public String getFirstName() {
@@ -62,11 +61,4 @@ public class RegisterRequest {
         this.phone = phone;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

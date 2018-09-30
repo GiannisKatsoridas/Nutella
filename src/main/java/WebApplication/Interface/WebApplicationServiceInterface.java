@@ -1,5 +1,6 @@
 package WebApplication.Interface;
 
+import WebApplication.Model.Helpers.MyXMLObject;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -56,7 +57,7 @@ public interface WebApplicationServiceInterface {
 
     PostSkillResponse PostSkill(PostSkillRequest request);
 
-    GetPersonalInfoResponse GetPersonalInfo(GetConnectionRequestsRequest request);
+    GetPersonalInfoResponse GetPersonalInfo(GetPersonalInfoRequest request);
 
     UpdateExperienceResponse UpdateExperience(UpdateExperienceRequest request);
 
@@ -80,5 +81,9 @@ public interface WebApplicationServiceInterface {
 
     GetPostResponse GetPost(GetPostRequest request);
 
-    UploadFileResponse UploadImage(InputStream request, long userId);
+    UploadFileResponse UploadImage(/*InputStream request,*/ long userId);
+
+    MyXMLObject ExportUser(ExportUserRequest request);
+
+    GetImageResponse GetImage(long userId);
 }

@@ -11,7 +11,6 @@ import java.util.Objects;
                 query = "select p from PicturesEntity p where p.userId = :userId"
         )
 })
-@IdClass(PicturesEntityPK.class)
 public class PicturesEntity {
     private long userId;
     private String link;
@@ -26,7 +25,7 @@ public class PicturesEntity {
         this.userId = userId;
     }
 
-    @Id
+    @Basic
     @Column(name = "Link")
     public String getLink() {
         return link;

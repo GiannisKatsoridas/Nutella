@@ -1,21 +1,20 @@
 package WebApplication.Controller;
 
 import WebApplication.Implementation.WebApplicationServiceImplementation;
+import WebApplication.Model.Helpers.MyXMLObject;
 import WebApplication.Model.Requests.*;
 import WebApplication.Model.Responses.*;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.*;
 
-@Produces({"application/json"})
 public class WebApplicationController {
 
     private WebApplicationServiceImplementation service;
@@ -27,6 +26,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("/user/register")
     public RegisterResponse CreateUser(RegisterRequest request){
 
@@ -35,6 +36,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/login/{email}/{password}")
     public LoginResponse Login(@PathParam("email") final String email, @PathParam("password") final String password){
 
@@ -47,6 +50,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/getusers")
     public GetUsersListResponse GetUsersList(){
 
@@ -55,6 +60,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/getinfo/{id}")
     public GetInfoResponse GetInfo(@PathParam("id") final long id){
 
@@ -65,6 +72,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("post/insert")
     public InsertPostResponse InsertPost(InsertPostRequest request){
 
@@ -73,6 +82,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/getconnections/{userid}")
     public GetConnectionsResponse GetConnections(@PathParam("userid") final long userId){
 
@@ -88,6 +99,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/insert")
     public InsertJobResponse InsertJob(InsertJobRequest request){
 
@@ -96,6 +109,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("post/like")
     public LikeResponse Like(LikeRequest request){
 
@@ -104,6 +119,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("post/comment")
     public CommentResponse Comment(CommentRequest request){
 
@@ -112,6 +129,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("post/getposts/{userId}")
     public GetPostsResponse GetPosts(@PathParam("userId") final long userId){
 
@@ -122,6 +141,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/search/{query}")
     public SearchResponse Search(@PathParam("query") final String query){
 
@@ -131,6 +152,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/getjobs/{userId}")
     public GetJobsResponse GetJobs(@PathParam("userId") final long userId){
 
@@ -140,6 +163,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/apply")
     public JobApplicationResponse JobApplication(JobApplicationRequest request){
 
@@ -148,6 +173,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/getapplicants/{jobId}")
     public GetMyApplicantsResponse GetMyApplicants(@PathParam("jobId") final long jobId){
 
@@ -157,6 +184,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/getmyjobs/{userId}")
     public GetMyJobsResponse GetMyJobs(@PathParam("userId") final long userId){
 
@@ -166,6 +195,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/edit")
     public EditJobResponse EditJob(EditJobRequest request){
 
@@ -174,6 +205,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("connection/sendrequest")
     public SendConnectionRequestResponse SendConnectionRequest(SendConnectionRequestRequest request){
 
@@ -182,6 +215,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("connection/getrequests/{userId}")
     public GetConnectionRequestsResponse GetConnectionRequests(@PathParam("userId") final long userId){
 
@@ -191,6 +226,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("connection/accept")
     public AcceptConnectionResponse AcceptConnection(AcceptConnectionRequest request){
 
@@ -199,6 +236,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("connection/reject")
     public RejectConnectionResponse RejectConnection(RejectConnectionRequest request){
 
@@ -207,6 +246,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("experience/post")
     public PostExperienceResponse PostExperience(PostExperienceRequest request){
 
@@ -215,6 +256,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("education/post")
     public PostEducationResponse PostEducation(PostEducationRequest request){
 
@@ -223,6 +266,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("skill/post")
     public PostSkillResponse PostSkill(PostSkillRequest request){
 
@@ -231,15 +276,19 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/getpersonalinfo/{userId}")
     public GetPersonalInfoResponse GetPersonalInfo(@PathParam("userId") final long userId){
 
-        GetConnectionRequestsRequest request = new GetConnectionRequestsRequest(userId);
+        GetPersonalInfoRequest request = new GetPersonalInfoRequest(userId);
 
         return service.GetPersonalInfo(request);
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("experience/update")
     public UpdateExperienceResponse UpdateExperience(UpdateExperienceRequest request){
 
@@ -248,6 +297,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("education/update")
     public UpdateEducationResponse UpdateEducation(UpdateEducationRequest request){
 
@@ -256,6 +307,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("skill/update")
     public UpdateSkillResponse UpdateSkill(UpdateSkillRequest request){
 
@@ -264,6 +317,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("message/send")
     public SendMessageResponse SendMessage(SendMessageRequest request){
 
@@ -272,6 +327,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("message/get/{userId}/{friendId}")
     public GetMessagesResponse GetMessages(@PathParam("userId") final long userId, @PathParam("friendId") final long friendId){
 
@@ -282,6 +339,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("notifications/get/{userId}")
     public GetNotificationsResponse GetNotifications(@PathParam("userId") final long userId){
 
@@ -291,6 +350,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/getconversations/{userId}")
     public GetConversationsResponse GetConversations(@PathParam("userId") final long userId){
 
@@ -300,6 +361,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/email/update")
     public UpdateEmailResponse UpdateEmail(UpdateEmailRequest request){
 
@@ -308,6 +371,8 @@ public class WebApplicationController {
     }
 
     @POST
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("user/password/update")
     public UpdatePasswordResponse UpdatePassword(UpdatePasswordRequest request){
 
@@ -316,6 +381,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("job/getmyapplications/{userId}")
     public GetMyJobApplicationsResponse GetMyApplications(@PathParam("userId") final long userId){
 
@@ -327,6 +394,8 @@ public class WebApplicationController {
     }
 
     @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
     @Path("post/get/{postId}")
     public GetPostResponse GetPost(@PathParam("postId") final long postId){
 
@@ -336,31 +405,53 @@ public class WebApplicationController {
     }
 
     @POST
-    @Path("image/upload")
-    public UploadFileResponse UploadImage(@RequestParam("file") MultipartFile[] files/*@FormDataParam("file") InputStream request, @FormDataParam("user") String userId*/){
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("image/upload/{userId}")
+    public UploadFileResponse UploadImage(@PathParam("userId") final long userId/*, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail*/){
 
-        String fileName = null;
-        String msg = "";
-        if (files != null && files.length >0) {
-            for(int i =0 ;i< files.length; i++){
-                try {
-                    fileName = files[i].getOriginalFilename();
-                    byte[] bytes = files[i].getBytes();
-                    BufferedOutputStream buffStream =
-                            new BufferedOutputStream(new FileOutputStream(new File("myPic2.jpg")));
-                    buffStream.write(bytes);
-                    buffStream.close();
-                    msg += "You have successfully uploaded " + fileName +"<br/>";
-                } catch (Exception e) {
-                    return new UploadFileResponse("You failed to upload " + fileName + ": " + e.getMessage() +"<br/>");
-                }
-            }
-            return new UploadFileResponse(msg);
-        } else {
-            return new UploadFileResponse("Unable to upload. File is empty.");
+        return service.UploadImage(/*uploadedInputStream,*/ userId);
+
+    }
+
+    @GET
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    @Path("user/export/{userId}")
+    public ExportUserResponse ExportUser(@PathParam("userId") final long userId){
+
+        ExportUserRequest request = new ExportUserRequest(userId);
+
+        MyXMLObject pojo = service.ExportUser(request);
+
+        String xml = null;
+        try {
+
+            JAXBContext context = JAXBContext.newInstance(MyXMLObject.class);
+            Marshaller m = context.createMarshaller();
+
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // To format XML
+
+            StringWriter sw = new StringWriter();
+            m.marshal(pojo, sw);
+            xml = sw.toString();
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
 
-        //return service.UploadImage(request, Long.parseLong(userId));
+        return new ExportUserResponse(xml);
+    }
 
+    @GET
+    @Path("image/get/{userId}")
+    @Produces("image/jpg")
+    public Response GetImage(@PathParam("userId") final long userId){
+
+        GetImageRequest request = new GetImageRequest(userId);
+
+        byte[] bytes = service.GetImage(userId).getData();
+
+        return Response.ok(bytes).build();
     }
 }

@@ -19,6 +19,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "LikesEntity.GetAllLikes",
                 query = "select l from LikesEntity l"
+        ),
+        @NamedQuery(
+                name = "LikesEntity.getLikesByUser",
+                query = "select l from LikesEntity l where l.userId = :userId"
         )
 })
 public class LikesEntity {

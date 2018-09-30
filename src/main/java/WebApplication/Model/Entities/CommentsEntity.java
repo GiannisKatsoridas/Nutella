@@ -19,6 +19,10 @@ import java.time.LocalDateTime;
         @NamedQuery(
                 name = "CommentsEntity.GetAllComments",
                 query = "select c from CommentsEntity c"
+        ),
+        @NamedQuery(
+                name = "CommentsEntity.getCommentsByUser",
+                query = "select c from CommentsEntity c where c.userId = :userId"
         )
 })
 public class CommentsEntity {
