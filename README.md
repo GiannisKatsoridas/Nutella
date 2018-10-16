@@ -1,1 +1,3 @@
-# Nutella
+Nutella
+
+This was an assignment for a university class, called Internet Application Technologies (Department of Informatics and Telecommunications - University of Athens). The main purpose was to create a Web Application similar to LinkedIn. This is the REST API used to feed the front end with the necessary data. The back end is written in Java using libraries such as Apache CXF, EclipseLink JPA etc. The script for the mysql database is provided (file: nutella.sql). There is, also, a design document (in Greek) describing, in detail, all the endpoints as well as analysing the database used and the helper classes. All in all, the API is fully functional, given someone builds the WAR Artifact correctly, and with a working Front End the website should be functional.
