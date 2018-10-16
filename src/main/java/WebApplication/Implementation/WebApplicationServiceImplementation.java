@@ -442,9 +442,9 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         List<UserInfo> result = new ArrayList<UserInfo>();
 
-        List<UsersEntity> users = db.GetConversations(request.getUserId());
+            List<UsersEntity> users = db.GetConversations(request.getUserId());
 
-        for(UsersEntity u: users){
+            for(UsersEntity u: users){
 
             PicturesEntity picture = db.GetPicture(u.getId());
             result.add(new UserInfo(u.getId(), u.getFirstName(), u.getLastName(), u.getEmail(), picture.getLink()));
