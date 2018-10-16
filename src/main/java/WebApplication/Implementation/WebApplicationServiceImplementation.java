@@ -56,7 +56,6 @@ public class WebApplicationServiceImplementation implements WebApplicationServic
 
         UsersEntity user = db.FindUserByEmailPassword(request.getEmail(), request.getPassword());
 
-        System.out.println(user.getId() + " - " + user.getEmail());
 
         return new LoginResponse(user.getId(), user.getIsAdmin());
 
